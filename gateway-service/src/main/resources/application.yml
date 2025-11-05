@@ -2,6 +2,8 @@ server:
   port: 9838
 
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: gateway-service
 
@@ -54,7 +56,7 @@ spring:
             - Path=/v1/auth/**
       discovery:
         locator:
-          enabled: true
+          enabled: false
 
 eureka:
   client:
