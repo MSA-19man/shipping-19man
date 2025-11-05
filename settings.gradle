@@ -1,0 +1,16 @@
+rootProject.name = 'msa-19man'
+include(
+        'common',
+        'eureka-server',
+        'gateway-service',
+        'user-service',
+        'auth-service',
+        'ai-service',
+        'alarm-service',
+        'hub-service',
+        'delivery-service',
+        'company-service',
+        'order-service',
+        'product-service',
+        'config-server'
+)
