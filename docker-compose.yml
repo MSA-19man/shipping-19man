@@ -9,6 +9,8 @@ services:
       POSTGRES_DB: ${COMPANY_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${COMPANY_DB_PORT}:5432"
     volumes:
@@ -29,6 +31,8 @@ services:
       POSTGRES_DB: ${PRODUCT_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${PRODUCT_DB_PORT}:5432"
     volumes:
@@ -49,6 +53,8 @@ services:
       POSTGRES_DB: ${ORDER_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${ORDER_DB_PORT}:5432"
     volumes:
@@ -69,6 +75,8 @@ services:
       POSTGRES_DB: ${HUB_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${HUB_DB_PORT}:5432"
     volumes:
@@ -89,6 +97,8 @@ services:
       POSTGRES_DB: ${USER_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${USER_DB_PORT}:5432"
     volumes:
@@ -109,6 +119,8 @@ services:
       POSTGRES_DB: ${AUTH_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${AUTH_DB_PORT}:5432"
     volumes:
@@ -129,6 +141,8 @@ services:
       POSTGRES_DB: ${DELIVERY_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${DELIVERY_DB_PORT}:5432"
     volumes:
@@ -149,6 +163,8 @@ services:
       POSTGRES_DB: ${AI_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${AI_DB_PORT}:5432"
     volumes:
@@ -169,6 +185,8 @@ services:
       POSTGRES_DB: ${ALARM_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      GDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "${ALARM_DB_PORT}:5432"
     volumes:
