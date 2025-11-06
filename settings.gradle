@@ -1,4 +1,5 @@
 rootProject.name = 'msa-19man'
+
 include(
         'common',
         'eureka-server',
