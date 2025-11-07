@@ -12,6 +12,11 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+# Application Local Settings
+application-local.yml
+
+# Environment Variables
+.env
 # AWS User-specific
 .idea/**/aws.xml
 

@@ -1,0 +1,215 @@
+version: '3.8'
+
+services:
+  # Company DB
+  company-db:
+    image: postgres:15-alpine
+    container_name: company-db
+    environment:
+      POSTGRES_DB: ${COMPANY_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${COMPANY_DB_PORT}:5432"
+    volumes:
+      - company-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Product DB
+  product-db:
+    image: postgres:15-alpine
+    container_name: product-db
+    environment:
+      POSTGRES_DB: ${PRODUCT_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${PRODUCT_DB_PORT}:5432"
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Order DB
+  order-db:
+    image: postgres:15-alpine
+    container_name: order-db
+    environment:
+      POSTGRES_DB: ${ORDER_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${ORDER_DB_PORT}:5432"
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Hub DB
+  hub-db:
+    image: postgres:15-alpine
+    container_name: hub-db
+    environment:
+      POSTGRES_DB: ${HUB_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${HUB_DB_PORT}:5432"
+    volumes:
+      - hub-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # User DB
+  user-db:
+    image: postgres:15-alpine
+    container_name: user-db
+    environment:
+      POSTGRES_DB: ${USER_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${USER_DB_PORT}:5432"
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Auth DB
+  auth-db:
+    image: postgres:15-alpine
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: ${AUTH_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATAA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${AUTH_DB_PORT}:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Delivery DB
+  delivery-db:
+    image: postgres:15-alpine
+    container_name: delivery-db
+    environment:
+      POSTGRES_DB: ${DELIVERY_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${DELIVERY_DB_PORT}:5432"
+    volumes:
+      - delivery-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # AI DB
+  ai-db:
+    image: postgres:15-alpine
+    container_name: ai-db
+    environment:
+      POSTGRES_DB: ${AI_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${AI_DB_PORT}:5432"
+    volumes:
+      - ai-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Alarm DB
+  alarm-db:
+    image: postgres:15-alpine
+    container_name: alarm-db
+    environment:
+      POSTGRES_DB: ${ALARM_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${ALARM_DB_PORT}:5432"
+    volumes:
+      - alarm-db-data:/var/lib/postgresql/data
+    networks:
+      - logistics-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  company-db-data:
+  product-db-data:
+  order-db-data:
+  hub-db-data:
+  user-db-data:
+  auth-db-data:
+  delivery-db-data:
+  ai-db-data:
+  alarm-db-data:
+
+networks:
+  logistics-network:
+    driver: bridge
