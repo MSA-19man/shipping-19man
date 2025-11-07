@@ -3,26 +3,25 @@ package com.sparta.companyservice.presentation.response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.sparta.companyservice.application.dto.FindCompanyResult;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.model.CompanyType;
 
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class CompanyResponse {
+public record CompanyResponse(
 
-	private UUID companyId;
-	private String name;
-	private CompanyType type;
-	private UUID hubId;
-	private String companyAddress;
-	private LocalDateTime createdAt;
-	private Long createdBy;
-	private LocalDateTime updatedAt;
-	private Long updatedBy;
-
+	UUID companyId,
+	String name,
+	CompanyType type,
+	UUID hubId,
+	String companyAddress,
+	LocalDateTime createdAt,
+	Long createdBy,
+	LocalDateTime updatedAt,
+	Long updatedBy
+) {
 	public static CompanyResponse from(Company company) {
 		return CompanyResponse.builder()
 			.companyId(company.getId())
@@ -36,4 +35,16 @@ public class CompanyResponse {
 			.updatedBy(company.getUpdatedBy())
 			.build();
 	}
+
+	public static CompanyResponse fromResult(FindCompanyResult result) {
+		return CompanyResponse.builder()
+			.companyId(result.id())
+			.name(result.name())
+			.type(result.type())
+			.hubId(result.hubId())
+			.companyAddress(result.companyAddress())
+			.createdAt(result.createdAt())
+			.build();
+	}
 }
+
