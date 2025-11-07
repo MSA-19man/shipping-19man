@@ -40,7 +40,7 @@ public class Company extends BaseEntity {
 	@Column(nullable = false)
 	private String companyAddress;
 
-	@Builder
+	@Builder(access = AccessLevel.PRIVATE)
 	private Company(String name, CompanyType type, UUID hubId, String companyAddress) {
 		this.name = name;
 		this.type = type;
