@@ -54,13 +54,42 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/v1/auth/**
+
+        # --- Swagger용 라우트 ---
+        # Swagger 문서 요청 시 prefix 제거 전용
+        - id: swagger-hub
+          uri: lb://hub-service
+          predicates:
+            - Path=/hubs/v3/api-docs/**
+          filters:
+            - RewritePath=/hubs/(?<segment>.*), /${segment}
+
       discovery:
         locator:
           enabled: false
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:19090/eureka/
     register-with-eureka: true
     fetch-registry: true
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    tags-sorter: alpha
+    operations-sorter: method
+    display-request-duration: true
+    doc-expansion: none
+    urls:
+      - name: hub-service
+        url: /hubs/v3/api-docs
+  api-docs:
+    path: /api-docs

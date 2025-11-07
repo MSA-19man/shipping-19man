@@ -4,11 +4,30 @@ server:
 spring:
   application:
     name: hub-service
+  springdoc:
+    api-docs:
+      path: /v3/api-docs
+  cloud: #임시로
+    config:
+      enabled: false
+  datasource: #임시로
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/p_hub
+    username: postgres
+    password: password
+  jpa: #임시
+    hibernate:
+      # (중요) DB를 방금 새로 만들었으니 'update'나 'create'로 설정
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:19090/eureka/
     register-with-eureka: true
     fetch-registry: true
   instance:
@@ -19,3 +38,7 @@ logging:
   level:
     com.sparta.hub-service: DEBUG
     org.hibernate.SQL: DEBUG
+
+openapi:
+  service:
+    url: http://localhost:19091 #swagger tryitout용 gw 주소
