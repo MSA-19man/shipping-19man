@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -42,6 +44,13 @@ public class HubService {
 
         // Page<Hub>(엔티티)를 Page<FindHubResult>(DTO)로 변환
         return hubPage.map(FindHubResult::from);
+    }
+
+    public FindHubResult getHubById(UUID hubId){
+        Hub hub = hubRepository.findById(hubId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 허브를 찾을 수 없습니다. Id: "+hubId));
+
+        return FindHubResult.from(hub);
     }
 
 }

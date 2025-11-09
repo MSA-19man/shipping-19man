@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/hubs")
@@ -48,6 +50,22 @@ public class HubController {
         Page<FindHubResponse> hubPageResponse = hubPageResult.map(FindHubResponse::from);
 
         PageResponse<FindHubResponse> responseData = PageResponse.of(hubPageResponse);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(responseData));
+    }
+
+    @GetMapping("/{hubId}")
+    public ResponseEntity<ApiResponse<FindHubResponse>> getHubById(
+            @PathVariable UUID hubId
+    ){
+        // 서비스 호출
+        //dto 변환
+        //ApiResponse로 변환해서 최종 반환
+        FindHubResult result = hubService.getHubById(hubId);
+
+        FindHubResponse responseData = FindHubResponse.from(result);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
