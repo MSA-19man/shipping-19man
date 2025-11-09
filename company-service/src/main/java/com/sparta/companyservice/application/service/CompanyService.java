@@ -2,6 +2,8 @@ package com.sparta.companyservice.application.service;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,4 +48,10 @@ public class CompanyService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 업체를 찾을 수 없습니다."));
 		return FindCompanyResult.from(company);
 	}
+
+	public Page<FindCompanyResult> getCompanies(Pageable pageable) {
+		Page<Company> companies = companyRepository.findAll(pageable);
+		return companies.map(FindCompanyResult::from);
+	}
+
 }
