@@ -1,19 +1,22 @@
 package com.sparta.hubservice.presentation.controller;
 
 import com.sparta.common.response.ApiResponse;
+import com.sparta.common.response.PageResponse;
 import com.sparta.hubservice.application.dto.CreateHubCommand;
 import com.sparta.hubservice.application.dto.CreateHubResult;
+import com.sparta.hubservice.application.dto.FindHubResult;
 import com.sparta.hubservice.application.service.HubService;
 import com.sparta.hubservice.presentation.request.CreateHubRequest;
 import com.sparta.hubservice.presentation.response.CreateHubResponse;
+import com.sparta.hubservice.presentation.response.FindHubResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +36,21 @@ public class HubController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success(responseData, "허브 생성 성공"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<PageResponse<FindHubResponse>>> getHubs(
+            @PageableDefault(size = 10, sort = "createdAt, desc") Pageable pageable
+            ){
+        Page<FindHubResult> hubPageResult = hubService.getHubs(pageable); // 전체 조회 요청
+
+        // Service의 Page<FindHubResult>를 Response의 Page<FindHubResponse>로 변환
+        Page<FindHubResponse> hubPageResponse = hubPageResult.map(FindHubResponse::from);
+
+        PageResponse<FindHubResponse> responseData = PageResponse.of(hubPageResponse);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(responseData));
     }
 }

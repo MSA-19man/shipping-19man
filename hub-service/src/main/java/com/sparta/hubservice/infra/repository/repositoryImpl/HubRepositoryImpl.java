@@ -4,6 +4,8 @@ import com.sparta.hubservice.domain.model.Hub;
 import com.sparta.hubservice.domain.repository.HubRepository;
 import com.sparta.hubservice.infra.repository.JpaRepository.HubJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,5 +17,10 @@ public class HubRepositoryImpl implements HubRepository {
     @Override
     public Hub save(Hub hub){
         return jpaRepository.save(hub);
+    }
+
+    @Override
+    public Page<Hub> findAll(Pageable pageable){
+        return jpaRepository.findAll(pageable);
     }
 }
