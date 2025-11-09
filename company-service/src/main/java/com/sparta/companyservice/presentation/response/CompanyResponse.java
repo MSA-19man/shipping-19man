@@ -44,6 +44,9 @@ public record CompanyResponse(
 			.hubId(result.hubId())
 			.companyAddress(result.companyAddress())
 			.createdAt(result.createdAt())
+			.createdBy(result.createdBy())
+			.updatedAt(result.updatedAt())
+			.updatedBy(result.updatedBy())
 			.build();
 	}
 }
