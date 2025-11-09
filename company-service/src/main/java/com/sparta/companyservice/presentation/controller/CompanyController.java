@@ -2,6 +2,7 @@ package com.sparta.companyservice.presentation.controller;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sparta.common.response.ApiResponse;
+import com.sparta.common.response.PageResponse;
 import com.sparta.companyservice.application.dto.CreateCompanyCommand;
 import com.sparta.companyservice.application.dto.FindCompanyResult;
+import com.sparta.companyservice.application.dto.PageCommand;
 import com.sparta.companyservice.application.service.CompanyService;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.presentation.request.CreateCompanyRequest;
@@ -32,7 +37,7 @@ public class CompanyController {
 	 * 업체 생성 - 권한: HUB_MANAGER, MASTER
 	 */
 	@PostMapping
-	public ResponseEntity<CompanyResponse> createCompany(
+	public ResponseEntity<ApiResponse<CompanyResponse>> createCompany(
 		// TODO: @CurrentUser
 		@Valid @RequestBody CreateCompanyRequest request
 	) {
@@ -41,16 +46,47 @@ public class CompanyController {
 		Company company = companyService.createCompany(command);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(CompanyResponse.from(company));
+			.body(ApiResponse.success(
+				CompanyResponse.from(company),
+				"업체 생성을 성공 했습니다.")
+			);
 	}
 
 	/**
 	 * 업체 단건 조회 - 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
 	 */
 	@GetMapping("/{companyId}")
-	public ResponseEntity<CompanyResponse> getCompany(@PathVariable UUID companyId) {
+	public ResponseEntity<ApiResponse<CompanyResponse>> getCompany(
+		@PathVariable("companyId") UUID companyId
+	) {
 		FindCompanyResult result = companyService.getCompany(companyId);
 
-		return ResponseEntity.ok(CompanyResponse.fromResult(result));
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(ApiResponse.success(
+				CompanyResponse.fromResult(result),
+				"해당 업체 조회에 성공했습니다.")
+			);
 	}
+
+	/**
+	 * 업체 다건 조회 (페이징)
+	 * 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
+	 */
+	@GetMapping
+	public ResponseEntity<ApiResponse<PageResponse<CompanyResponse>>> getCompanies(
+		@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+		@RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+		@RequestParam(name = "sort", required = false, defaultValue = "createdAt") String sort,
+		@RequestParam(name = "direction", required = false, defaultValue = "DESC") String direction
+	) {
+		PageCommand command = PageCommand.of(page, size, sort, direction);
+
+		Page<FindCompanyResult> results = companyService.getCompanies(command.toPageable());
+
+		Page<CompanyResponse> responsePage = results.map(CompanyResponse::fromResult);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(ApiResponse.success(PageResponse.of(responsePage)));
+	}
+
 }
