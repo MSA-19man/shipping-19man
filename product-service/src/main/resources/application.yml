@@ -12,7 +12,7 @@ spring:
     active: local
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/logistics_db?currentSchema=product_schema
+    url: jdbc:postgresql://localhost:5432/logistics_db
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
