@@ -1,5 +1,8 @@
 package com.sparta.productservice.infra.repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import com.sparta.productservice.domain.model.Product;
@@ -16,5 +19,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 	@Override
 	public Product save(Product product) {
 		return productJpaRepository.save(product);
+	}
+
+	@Override
+	public Optional<Product> findById(UUID id) {
+		return productJpaRepository.findById(id);
 	}
 }
