@@ -17,12 +17,14 @@ import com.sparta.common.response.ApiResponse;
 import com.sparta.common.response.PageResponse;
 import com.sparta.companyservice.application.dto.CreateCompanyCommand;
 import com.sparta.companyservice.application.dto.FindCompanyResult;
+import com.sparta.companyservice.application.dto.GetCompanyResult;
 import com.sparta.companyservice.application.dto.PageCommand;
 import com.sparta.companyservice.application.service.CompanyService;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.presentation.request.CreateCompanyRequest;
 import com.sparta.companyservice.presentation.response.CreateCompanyResponse;
 import com.sparta.companyservice.presentation.response.FindCompanyResponse;
+import com.sparta.companyservice.presentation.response.GetCompanyResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +73,7 @@ public class CompanyController {
 	 * 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
 	 */
 	@GetMapping
-	public ResponseEntity<ApiResponse<PageResponse<FindCompanyResponse>>> getCompanies(
+	public ResponseEntity<ApiResponse<PageResponse<GetCompanyResponse>>> getCompanies(
 		@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
 		@RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
 		@RequestParam(name = "sort", required = false, defaultValue = "createdAt") String sort,
@@ -79,12 +81,11 @@ public class CompanyController {
 	) {
 		PageCommand command = PageCommand.of(page, size, sort, direction);
 
-		Page<FindCompanyResult> results = companyService.getCompanies(command.toPageable());
+		Page<GetCompanyResult> results = companyService.getCompanies(command.toPageable());
 
-		Page<FindCompanyResponse> responsePage = results.map(FindCompanyResponse::fromResult);
+		Page<GetCompanyResponse> responsePage = results.map(GetCompanyResponse::fromResult);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(ApiResponse.success(PageResponse.of(responsePage)));
 	}
-
 }

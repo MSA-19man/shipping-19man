@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sparta.companyservice.application.dto.CreateCompanyCommand;
 import com.sparta.companyservice.application.dto.FindCompanyResult;
+import com.sparta.companyservice.application.dto.GetCompanyResult;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 
@@ -49,9 +50,9 @@ public class CompanyService {
 		return FindCompanyResult.from(company);
 	}
 
-	public Page<FindCompanyResult> getCompanies(Pageable pageable) {
+	public Page<GetCompanyResult> getCompanies(Pageable pageable) {
 		Page<Company> companies = companyRepository.findAll(pageable);
-		return companies.map(FindCompanyResult::from);
+		return companies.map(GetCompanyResult::from);
 	}
 
 }
