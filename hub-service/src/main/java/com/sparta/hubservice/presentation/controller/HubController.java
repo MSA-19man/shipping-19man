@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class HubController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<FindHubResponse>>> getHubs(
-            @PageableDefault(size = 10, sort = "createdAt, desc") Pageable pageable
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
             ){
         Page<FindHubResult> hubPageResult = hubService.getHubs(pageable); // 전체 조회 요청
 
