@@ -57,4 +57,11 @@ public class Product extends BaseEntity {
 			.stock(stock)
 			.build();
 	}
+
+	public void deductStock(Integer quantity) {
+		if (this.stock < quantity) {
+			throw new IllegalArgumentException("재고가 부족합니다. 현재 재고: " + stock);
+		}
+		this.stock -= quantity;
+	}
 }
