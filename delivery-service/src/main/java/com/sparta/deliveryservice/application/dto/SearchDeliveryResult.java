@@ -6,7 +6,7 @@ import com.sparta.deliveryservice.domain.model.DeliveryStatus;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record CreateDeliveryResult(
+public record SearchDeliveryResult(
         UUID deliveryId,
         UUID orderId,
         Long userId,
@@ -20,8 +20,8 @@ public record CreateDeliveryResult(
         LocalDateTime createdAt,
         Long createdBy
 ) {
-    public static CreateDeliveryResult from(Delivery delivery) {
-        return new CreateDeliveryResult(
+    public static SearchDeliveryResult from(Delivery delivery) {
+        return new SearchDeliveryResult(
                 delivery.getId(),
                 delivery.getOrderId(),
                 delivery.getUserId(),
@@ -36,5 +36,4 @@ public record CreateDeliveryResult(
                 delivery.getCreatedBy()
         );
     }
-
 }
