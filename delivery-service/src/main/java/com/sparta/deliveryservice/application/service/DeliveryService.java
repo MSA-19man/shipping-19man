@@ -6,7 +6,6 @@ import com.sparta.deliveryservice.application.dto.CreateDeliveryResult;
 import com.sparta.deliveryservice.application.dto.SearchDeliveryDetailResult;
 import com.sparta.deliveryservice.application.dto.SearchDeliveryResult;
 import com.sparta.deliveryservice.domain.model.Delivery;
-import com.sparta.deliveryservice.domain.model.DeliveryStatus;
 import com.sparta.deliveryservice.domain.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,10 +25,9 @@ public class DeliveryService {
 
     @Transactional
     public CreateDeliveryResult createDelivery(CreateDeliveryCommand createDeliveryCommand) {
-        deliveryRepository.findByOrderId(createDeliveryCommand.orderId()).
-                ifPresent(delivery -> {
-                    throw new IllegalArgumentException("이미 해당 주문에 대한 배송이 존재합니다.");
-                });
+        if (deliveryRepository.existsByOrderIdAndDeletedAtIsNull(createDeliveryCommand.orderId())) {
+            throw new IllegalArgumentException("이미 해당 주문에 대한 배송이 존재합니다.");
+        }
 
         Delivery delivery = Delivery.of(
                 createDeliveryCommand.orderId(),
@@ -39,8 +37,8 @@ public class DeliveryService {
                 createDeliveryCommand.deliveryAddress(),
                 createDeliveryCommand.receiverName(),
                 createDeliveryCommand.receiverSlackId(),
-                createDeliveryCommand.companyAgentId(),
-                DeliveryStatus.HUB_WAITING);
+                createDeliveryCommand.companyAgentId()
+        );
 
         delivery = deliveryRepository.save(delivery);
 
@@ -74,11 +72,11 @@ public class DeliveryService {
             }
 
             case "HUB_MANAGER" -> {
-                yield deliveryRepository.findAllByDepartureHubIdOrArrivalHubIdAndDeletedAtIsNull(tempHubId,tempHubId,pageable);
+                yield deliveryRepository.findAllByDepartureHubIdOrArrivalHubIdAndDeletedAtIsNull(tempHubId, tempHubId, pageable);
             }
 
-            case "DELIVERY_MANAGER","COMPANY_MANAGER" -> {
-                yield deliveryRepository.findAllByUserIdAndDeletedAtIsNull(tempUserId,pageable);
+            case "DELIVERY_MANAGER", "COMPANY_MANAGER" -> {
+                yield deliveryRepository.findAllByUserIdAndDeletedAtIsNull(tempUserId, pageable);
             }
             default -> throw new IllegalStateException("권한이 유효하지 않습니다.");
         };

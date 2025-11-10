@@ -68,7 +68,7 @@ public class Delivery extends BaseEntity {
         this.receiverName = receiverName;
         this.receiverSlackId = receiverSlackId;
         this.companyAgentId = companyAgentId;
-        this.status = status;
+        this.status = DeliveryStatus.HUB_WAITING;
     }
 
     public static Delivery of(UUID orderId,
@@ -78,8 +78,7 @@ public class Delivery extends BaseEntity {
                               String deliveryAddress,
                               String receiverName,
                               String receiverSlackId,
-                              UUID companyAgentId,
-                              DeliveryStatus status) {
+                              UUID companyAgentId) {
         return Delivery.builder()
                 .orderId(orderId)
                 .userId(userId)
@@ -89,7 +88,6 @@ public class Delivery extends BaseEntity {
                 .receiverName(receiverName)
                 .receiverSlackId(receiverSlackId)
                 .companyAgentId(companyAgentId)
-                .status(status)
                 .build();
     }
 }
