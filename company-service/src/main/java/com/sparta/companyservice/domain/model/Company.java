@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "p_company")
+@Table(name = "p_company", schema = "company_schema")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Company extends BaseEntity {
 
@@ -40,7 +40,7 @@ public class Company extends BaseEntity {
 	@Column(nullable = false)
 	private String companyAddress;
 
-	@Builder
+	@Builder(access = AccessLevel.PRIVATE)
 	private Company(String name, CompanyType type, UUID hubId, String companyAddress) {
 		this.name = name;
 		this.type = type;
