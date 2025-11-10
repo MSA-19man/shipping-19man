@@ -1,9 +1,15 @@
 package com.sparta.companyservice.application.service;
 
+import java.util.UUID;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sparta.companyservice.application.dto.CreateCompanyCommand;
+import com.sparta.companyservice.application.dto.FindCompanyResult;
+import com.sparta.companyservice.application.dto.GetCompanyResult;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.repository.CompanyRepository;
 
@@ -20,24 +26,33 @@ public class CompanyService {
 
 	@Transactional
 	public Company createCompany(CreateCompanyCommand command) {
-		log.info("[CompanyService] 업체 생성 시작 - name={}", command.getName());
+		log.info("[CompanyService] 업체 생성 시작 - name={}", command.name());
 
-		if (companyRepository.existsByName(command.getName())) {
+		if (companyRepository.existsByName(command.name())) {
 			throw new IllegalArgumentException("이미 존재하는 업체명입니다.");
 		}
 
 		Company company = Company.of(
-			command.getName(),
-			command.getType(),
-			command.getHubId(),
-			command.getCompanyAddress()
+			command.name(),
+			command.type(),
+			command.hubId(),
+			command.companyAddress()
 		);
 
 		Company savedCompany = companyRepository.save(company);
-
 		log.info("[CompanyService] 업체 생성 완료 - companyId={}", savedCompany.getId());
-
-		// Domain 반환! (Response 아님)
 		return savedCompany;
 	}
+
+	public FindCompanyResult getCompany(UUID companyId) {
+		Company company = companyRepository.findById(companyId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 업체를 찾을 수 없습니다."));
+		return FindCompanyResult.from(company);
+	}
+
+	public Page<GetCompanyResult> getCompanies(Pageable pageable) {
+		Page<Company> companies = companyRepository.findAll(pageable);
+		return companies.map(GetCompanyResult::from);
+	}
+
 }

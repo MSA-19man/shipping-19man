@@ -5,13 +5,12 @@ import java.util.UUID;
 import com.sparta.companyservice.domain.model.CompanyType;
 
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class CreateCompanyCommand {
-	private final String name;
-	private final CompanyType type;
-	private final UUID hubId;
-	private final String companyAddress;
+public record CreateCompanyCommand(
+	String name,
+	CompanyType type,
+	UUID hubId,
+	String companyAddress
+) {
 }
