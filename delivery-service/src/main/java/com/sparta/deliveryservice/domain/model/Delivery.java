@@ -23,6 +23,9 @@ public class Delivery extends BaseEntity {
     private UUID orderId;
 
     @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
     private UUID departureHubId;
 
     @Column(nullable = false)
@@ -49,6 +52,7 @@ public class Delivery extends BaseEntity {
 
     @Builder(access = AccessLevel.PRIVATE)
     private Delivery(UUID orderId,
+                     Long userId,
                      UUID departureHubId,
                      UUID arrivalHubId,
                      String deliveryAddress,
@@ -57,6 +61,7 @@ public class Delivery extends BaseEntity {
                      UUID companyAgentId,
                      DeliveryStatus status) {
         this.orderId = orderId;
+        this.userId = userId;
         this.departureHubId = departureHubId;
         this.arrivalHubId = arrivalHubId;
         this.deliveryAddress = deliveryAddress;
@@ -67,6 +72,7 @@ public class Delivery extends BaseEntity {
     }
 
     public static Delivery of(UUID orderId,
+                              Long userId,
                               UUID departureHubId,
                               UUID arrivalHubId,
                               String deliveryAddress,
@@ -76,6 +82,7 @@ public class Delivery extends BaseEntity {
                               DeliveryStatus status) {
         return Delivery.builder()
                 .orderId(orderId)
+                .userId(userId)
                 .departureHubId(departureHubId)
                 .arrivalHubId(arrivalHubId)
                 .deliveryAddress(deliveryAddress)
