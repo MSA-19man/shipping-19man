@@ -13,9 +13,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "p_product", schema = "product_schema")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends BaseEntity {
@@ -24,7 +26,7 @@ public class Product extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(nullable = false, length = 200)
+	@Column(nullable = false, length = 100)
 	private String name;
 
 	@Column(nullable = false)
