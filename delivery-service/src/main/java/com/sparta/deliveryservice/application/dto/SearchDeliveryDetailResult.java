@@ -9,6 +9,7 @@ import java.util.UUID;
 public record SearchDeliveryDetailResult(
         UUID deliveryId,
         UUID orderId,
+        Long userId,
         DeliveryStatus status,
         UUID departureHubId,
         UUID arrivalHubId,
@@ -23,6 +24,7 @@ public record SearchDeliveryDetailResult(
         return new SearchDeliveryDetailResult(
                 delivery.getId(),
                 delivery.getOrderId(),
+                delivery.getUserId(),
                 delivery.getStatus(),
                 delivery.getDepartureHubId(),
                 delivery.getArrivalHubId(),
