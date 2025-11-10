@@ -23,6 +23,9 @@ public class Delivery extends BaseEntity {
     private UUID orderId;
 
     @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
     private UUID departureHubId;
 
     @Column(nullable = false)
@@ -49,6 +52,7 @@ public class Delivery extends BaseEntity {
 
     @Builder(access = AccessLevel.PRIVATE)
     private Delivery(UUID orderId,
+                     Long userId,
                      UUID departureHubId,
                      UUID arrivalHubId,
                      String deliveryAddress,
@@ -57,32 +61,33 @@ public class Delivery extends BaseEntity {
                      UUID companyAgentId,
                      DeliveryStatus status) {
         this.orderId = orderId;
+        this.userId = userId;
         this.departureHubId = departureHubId;
         this.arrivalHubId = arrivalHubId;
         this.deliveryAddress = deliveryAddress;
         this.receiverName = receiverName;
         this.receiverSlackId = receiverSlackId;
         this.companyAgentId = companyAgentId;
-        this.status = status;
+        this.status = DeliveryStatus.HUB_WAITING;
     }
 
     public static Delivery of(UUID orderId,
+                              Long userId,
                               UUID departureHubId,
                               UUID arrivalHubId,
                               String deliveryAddress,
                               String receiverName,
                               String receiverSlackId,
-                              UUID companyAgentId,
-                              DeliveryStatus status) {
+                              UUID companyAgentId) {
         return Delivery.builder()
                 .orderId(orderId)
+                .userId(userId)
                 .departureHubId(departureHubId)
                 .arrivalHubId(arrivalHubId)
                 .deliveryAddress(deliveryAddress)
                 .receiverName(receiverName)
                 .receiverSlackId(receiverSlackId)
                 .companyAgentId(companyAgentId)
-                .status(status)
                 .build();
     }
 }

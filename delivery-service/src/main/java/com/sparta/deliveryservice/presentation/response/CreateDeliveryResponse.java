@@ -10,6 +10,7 @@ import java.util.UUID;
 public record CreateDeliveryResponse(
         UUID deliveryId,
         UUID orderId,
+        Long userId,
         DeliveryStatus status,
         UUID departureHubId,
         UUID arrivalHubId,
@@ -22,6 +23,7 @@ public record CreateDeliveryResponse(
         return CreateDeliveryResponse.builder()
                 .deliveryId(result.deliveryId())
                 .orderId(result.orderId())
+                .userId(result.userId())
                 .status(result.status())
                 .departureHubId(result.departureHubId())
                 .arrivalHubId(result.arrivalHubId())
