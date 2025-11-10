@@ -5,6 +5,26 @@ spring:
   application:
     name: user-service
 
+    profiles:
+      active: local
+
+    datasource:
+      url: jdbc:postgresql://localhost:5432/logistics_db?currentSchema=company_schema
+      username: ${POSTGRES_USER:postgres}
+      password: ${POSTGRES_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          default_schema: user_schema
+      open-in-view: false
+
 eureka:
   client:
     service-url:
