@@ -4,13 +4,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.sparta.companyservice.application.dto.FindCompanyResult;
-import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.model.CompanyType;
 
 import lombok.Builder;
 
 @Builder
-public record CompanyResponse(
+public record FindCompanyResponse(
 
 	UUID companyId,
 	String name,
@@ -22,22 +21,9 @@ public record CompanyResponse(
 	LocalDateTime updatedAt,
 	Long updatedBy
 ) {
-	public static CompanyResponse from(Company company) {
-		return CompanyResponse.builder()
-			.companyId(company.getId())
-			.name(company.getName())
-			.type(company.getType())
-			.hubId(company.getHubId())
-			.companyAddress(company.getCompanyAddress())
-			.createdAt(company.getCreatedAt())
-			.createdBy(company.getCreatedBy())
-			.updatedAt(company.getUpdatedAt())
-			.updatedBy(company.getUpdatedBy())
-			.build();
-	}
 
-	public static CompanyResponse fromResult(FindCompanyResult result) {
-		return CompanyResponse.builder()
+	public static FindCompanyResponse fromResult(FindCompanyResult result) {
+		return FindCompanyResponse.builder()
 			.companyId(result.id())
 			.name(result.name())
 			.type(result.type())

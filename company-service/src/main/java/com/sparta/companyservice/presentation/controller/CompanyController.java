@@ -21,7 +21,8 @@ import com.sparta.companyservice.application.dto.PageCommand;
 import com.sparta.companyservice.application.service.CompanyService;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.presentation.request.CreateCompanyRequest;
-import com.sparta.companyservice.presentation.response.CompanyResponse;
+import com.sparta.companyservice.presentation.response.CreateCompanyResponse;
+import com.sparta.companyservice.presentation.response.FindCompanyResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,7 @@ public class CompanyController {
 	 * 업체 생성 - 권한: HUB_MANAGER, MASTER
 	 */
 	@PostMapping
-	public ResponseEntity<ApiResponse<CompanyResponse>> createCompany(
-		// TODO: @CurrentUser
+	public ResponseEntity<ApiResponse<CreateCompanyResponse>> createCompany(
 		@Valid @RequestBody CreateCompanyRequest request
 	) {
 		CreateCompanyCommand command = request.toCommand();
@@ -46,24 +46,22 @@ public class CompanyController {
 		Company company = companyService.createCompany(command);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(ApiResponse.success(
-				CompanyResponse.from(company),
-				"업체 생성을 성공 했습니다.")
-			);
+			.body(ApiResponse.success(CreateCompanyResponse.from(company),
+				"업체 생성을 성공 했습니다."));
 	}
 
 	/**
 	 * 업체 단건 조회 - 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
 	 */
 	@GetMapping("/{companyId}")
-	public ResponseEntity<ApiResponse<CompanyResponse>> getCompany(
+	public ResponseEntity<ApiResponse<FindCompanyResponse>> getCompany(
 		@PathVariable("companyId") UUID companyId
 	) {
 		FindCompanyResult result = companyService.getCompany(companyId);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(ApiResponse.success(
-				CompanyResponse.fromResult(result),
+				FindCompanyResponse.fromResult(result),
 				"해당 업체 조회에 성공했습니다.")
 			);
 	}
@@ -73,7 +71,7 @@ public class CompanyController {
 	 * 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
 	 */
 	@GetMapping
-	public ResponseEntity<ApiResponse<PageResponse<CompanyResponse>>> getCompanies(
+	public ResponseEntity<ApiResponse<PageResponse<FindCompanyResponse>>> getCompanies(
 		@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
 		@RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
 		@RequestParam(name = "sort", required = false, defaultValue = "createdAt") String sort,
@@ -83,7 +81,7 @@ public class CompanyController {
 
 		Page<FindCompanyResult> results = companyService.getCompanies(command.toPageable());
 
-		Page<CompanyResponse> responsePage = results.map(CompanyResponse::fromResult);
+		Page<FindCompanyResponse> responsePage = results.map(FindCompanyResponse::fromResult);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(ApiResponse.success(PageResponse.of(responsePage)));
