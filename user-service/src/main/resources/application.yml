@@ -2,33 +2,41 @@ server:
   port: 19200
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   application:
     name: user-service
 
-    profiles:
-      active: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/logistics_db
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
-    datasource:
-      url: jdbc:postgresql://localhost:5432/logistics_db?currentSchema=company_schema
-      username: ${POSTGRES_USER:postgres}
-      password: ${POSTGRES_PASSWORD}
-      driver-class-name: org.postgresql.Driver
-
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-          default_schema: user_schema
-      open-in-view: false
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: user_schema
+    open-in-view: false
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: FULL
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:19090/eureka/
     register-with-eureka: true
     fetch-registry: true
   instance:

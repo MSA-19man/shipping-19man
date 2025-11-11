@@ -28,4 +28,11 @@ public class CompanyInternalController {
 
 		return InternalCompanyResponse.fromResult(company);
 	}
+
+	@GetMapping("/v1/companies/{companyId}/exists")
+	public Boolean existsCompany(
+		@PathVariable("companyId") UUID companyId
+	) {
+		return companyService.existCompany(companyId);
+	}
 }

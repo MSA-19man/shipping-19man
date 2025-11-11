@@ -55,4 +55,7 @@ public class CompanyService {
 		return companies.map(GetCompanyResult::from);
 	}
 
+	public Boolean existCompany(UUID companyId) {
+		return companyRepository.existsByIdAndDeletedAtIsNull(companyId);
+	}
 }
