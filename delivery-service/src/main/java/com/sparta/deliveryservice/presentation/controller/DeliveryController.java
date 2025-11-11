@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/deliveries")
+@RequestMapping("/api/v1/deliveries")
 @RequiredArgsConstructor
 @Tag(name = "배송 API", description = "배송 관련 기능 API입니다.")
 public class DeliveryController {
