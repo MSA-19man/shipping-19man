@@ -94,6 +94,19 @@ public class DeliveryService {
         return UpdateStatusDeliveryResult.from(delivery,beforeStatus);
     }
 
+    /**
+     * user와 security가 완성되는대로 업데이트 할 예정입니다.
+     */
+    @Transactional
+    public DeleteDeliveryResult DeleteDelivery(UUID deliveryId) {
+        Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
+                new IllegalArgumentException("배송을 찾을수 없습니다."));
+
+        delivery.markDeleted(delivery.getUserId()); //임시
+        delivery = deliveryRepository.save(delivery);
+        return DeleteDeliveryResult.from(delivery);
+    }
+
     private DeliveryStatus getNextStatus(DeliveryStatus status) {
         return switch (status) {
             case HUB_WAITING -> DeliveryStatus.HUB_MOVING;

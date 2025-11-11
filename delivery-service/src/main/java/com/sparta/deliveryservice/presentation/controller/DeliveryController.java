@@ -5,10 +5,7 @@ import com.sparta.common.response.PageResponse;
 import com.sparta.deliveryservice.application.dto.*;
 import com.sparta.deliveryservice.application.service.DeliveryService;
 import com.sparta.deliveryservice.presentation.request.CreateDeliveryRequest;
-import com.sparta.deliveryservice.presentation.response.CreateDeliveryResponse;
-import com.sparta.deliveryservice.presentation.response.SearchDeliveryDetailResponse;
-import com.sparta.deliveryservice.presentation.response.SearchDeliveryResponse;
-import com.sparta.deliveryservice.presentation.response.UpdateStatusDeliveryResponse;
+import com.sparta.deliveryservice.presentation.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -88,5 +85,17 @@ public class DeliveryController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "배송 상태가 변경되었습니다."));
+    }
+
+    @Operation(summary = "배송 삭제", description = "배송을 삭제하는 API 입니다.")
+    @DeleteMapping("/{deliveryId}")
+    public ResponseEntity<ApiResponse<DeleteDeliveryResponse>> deleteDelivery(
+            @PathVariable UUID deliveryId
+    ) {
+        DeleteDeliveryResult result = deliveryService.DeleteDelivery(deliveryId);
+        DeleteDeliveryResponse response = DeleteDeliveryResponse.from(result);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(response,"배송이 삭제되었습니다."));
     }
 }
