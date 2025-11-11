@@ -20,5 +20,7 @@ public interface HubRouteRepository {
     // 단건 조회
     Optional<HubRoute> findById(UUID id);
 
+
+    List<HubRoute> findAll();
     // Todo 출발/도착지 별로 조회하기..
 }

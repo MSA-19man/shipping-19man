@@ -35,4 +35,9 @@ public class HubRouteRepositoryImpl implements HubRouteRepository {
     public Optional<HubRoute> findById(UUID id){
         return jpaRepository.findById(id);
     }
+
+    @Override
+    public List<HubRoute> findAll() {
+        return jpaRepository.findAll();
+    }
 }

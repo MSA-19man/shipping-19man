@@ -4,6 +4,7 @@ import com.sparta.hubservice.domain.model.Hub;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,6 +12,8 @@ public interface HubRepository {
     Hub save(Hub hub);
 
     Page<Hub> findAll(Pageable pageable);
+
+    List<Hub> findAll();
 
     Optional<Hub> findById(UUID hubId);
 }
