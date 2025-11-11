@@ -22,21 +22,12 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
 
     @Transactional
-    public CreateDeliveryResult createDelivery(CreateDeliveryCommand createDeliveryCommand) {
-        if (deliveryRepository.existsByOrderIdAndDeletedAtIsNull(createDeliveryCommand.orderId())) {
+    public CreateDeliveryResult createDelivery(CreateDeliveryCommand command) {
+        if (deliveryRepository.existsByOrderIdAndDeletedAtIsNull(command.orderId())) {
             throw new IllegalArgumentException("이미 해당 주문에 대한 배송이 존재합니다.");
         }
 
-        Delivery delivery = Delivery.of(
-                createDeliveryCommand.orderId(),
-                createDeliveryCommand.userId(),
-                createDeliveryCommand.departureHubId(),
-                createDeliveryCommand.arrivalHubId(),
-                createDeliveryCommand.deliveryAddress(),
-                createDeliveryCommand.receiverName(),
-                createDeliveryCommand.receiverSlackId(),
-                createDeliveryCommand.companyAgentId()
-        );
+        Delivery delivery = command.toEntity();
 
         delivery = deliveryRepository.save(delivery);
 
