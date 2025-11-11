@@ -107,6 +107,16 @@ public class DeliveryService {
         return DeleteDeliveryResult.from(delivery);
     }
 
+    @Transactional
+    public UpdateDeliveryResult UpdateDelivery(UpdateDeliveryCommand command, UUID deliveryId) {
+        Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
+                new IllegalArgumentException("배송을 찾을수 없습니다."));
+
+        delivery.updateDeliveryInfo(command);
+        delivery = deliveryRepository.save(delivery);
+        return UpdateDeliveryResult.from(delivery);
+    }
+
     private DeliveryStatus getNextStatus(DeliveryStatus status) {
         return switch (status) {
             case HUB_WAITING -> DeliveryStatus.HUB_MOVING;
