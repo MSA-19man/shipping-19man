@@ -37,4 +37,9 @@ public class HubRepositoryImpl implements HubRepository {
     public List<Hub> findAll() {
         return jpaRepository.findAll();
     }
+
+    @Override
+    public List<Hub> findAllByNameIn(List<String> names) {
+        return jpaRepository.findAllByNameIn(names);
+    }
 }

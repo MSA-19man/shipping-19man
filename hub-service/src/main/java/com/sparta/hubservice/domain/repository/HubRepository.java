@@ -16,4 +16,6 @@ public interface HubRepository {
     List<Hub> findAll();
 
     Optional<Hub> findById(UUID hubId);
+
+    List<Hub> findAllByNameIn(List<String> names);
 }
