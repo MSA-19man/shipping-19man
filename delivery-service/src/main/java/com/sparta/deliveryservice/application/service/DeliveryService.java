@@ -1,11 +1,9 @@
 package com.sparta.deliveryservice.application.service;
 
 import com.sparta.common.util.PageableUtil;
-import com.sparta.deliveryservice.application.dto.CreateDeliveryCommand;
-import com.sparta.deliveryservice.application.dto.CreateDeliveryResult;
-import com.sparta.deliveryservice.application.dto.SearchDeliveryDetailResult;
-import com.sparta.deliveryservice.application.dto.SearchDeliveryResult;
+import com.sparta.deliveryservice.application.dto.*;
 import com.sparta.deliveryservice.domain.model.Delivery;
+import com.sparta.deliveryservice.domain.model.DeliveryStatus;
 import com.sparta.deliveryservice.domain.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -82,5 +80,41 @@ public class DeliveryService {
         };
 
         return deliveryPage.map(SearchDeliveryResult::from);
+    }
+
+    @Transactional
+    public UpdateStatusDeliveryResult UpdateStatusDelivery(UUID deliveryId) {
+        Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
+                new IllegalArgumentException("배송을 찾을수 없습니다."));
+
+        DeliveryStatus beforeStatus = delivery.getStatus();
+        DeliveryStatus nextStatus = getNextStatus(beforeStatus);
+        delivery.updateStatus(nextStatus);
+        deliveryRepository.save(delivery);
+        return UpdateStatusDeliveryResult.from(delivery,beforeStatus);
+    }
+
+    /**
+     * user와 security가 완성되는대로 업데이트 할 예정입니다.
+     */
+    @Transactional
+    public DeleteDeliveryResult DeleteDelivery(UUID deliveryId) {
+        Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
+                new IllegalArgumentException("배송을 찾을수 없습니다."));
+
+        delivery.markDeleted(delivery.getUserId()); //임시
+        delivery = deliveryRepository.save(delivery);
+        return DeleteDeliveryResult.from(delivery);
+    }
+
+    private DeliveryStatus getNextStatus(DeliveryStatus status) {
+        return switch (status) {
+            case HUB_WAITING -> DeliveryStatus.HUB_MOVING;
+            case HUB_MOVING -> DeliveryStatus.HUB_ARRIVED;
+            case HUB_ARRIVED -> DeliveryStatus.COMPANY_MOVING;
+            case COMPANY_MOVING ->DeliveryStatus.COMPLETED;
+            case COMPLETED -> throw new IllegalStateException("이미 배송이 완료되었습니다.");
+            default -> throw new IllegalStateException("잘못된 요청입니다.");
+        };
     }
 }
