@@ -37,4 +37,9 @@ public class CompanyRepositoryImpl implements CompanyRepository {
 	public Page<Company> findAll(Pageable pageable) {
 		return companyJpaRepository.findAllByDeletedAtIsNull(pageable);
 	}
+
+	@Override
+	public Boolean existsByIdAndDeletedAtIsNull(UUID companyId) {
+		return companyJpaRepository.existsByIdAndDeletedAtIsNull(companyId);
+	}
 }

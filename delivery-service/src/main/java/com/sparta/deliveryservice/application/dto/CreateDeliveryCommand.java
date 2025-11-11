@@ -1,5 +1,7 @@
 package com.sparta.deliveryservice.application.dto;
 
+import com.sparta.deliveryservice.domain.model.Delivery;
+
 import java.util.UUID;
 
 public record CreateDeliveryCommand(
@@ -12,4 +14,16 @@ public record CreateDeliveryCommand(
         String receiverSlackId,
         UUID companyAgentId
 ) {
+    public Delivery toEntity(){
+        return Delivery.of(
+                this.orderId,
+                this.userId,
+                this.departureHubId,
+                this.arrivalHubId,
+                this.deliveryAddress,
+                this.receiverName,
+                this.receiverSlackId,
+                this.companyAgentId
+        );
+    }
 }

@@ -15,4 +15,6 @@ public interface CompanyJpaRepository extends JpaRepository<Company, UUID> {
 	Optional<Company> findByIdAndDeletedAtIsNull(UUID companyId);
 
 	Page<Company> findAllByDeletedAtIsNull(Pageable pageable);
+
+	Boolean existsByIdAndDeletedAtIsNull(UUID companyId);
 }
