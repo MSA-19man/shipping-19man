@@ -81,7 +81,7 @@ public class DeliveryController {
     public ResponseEntity<ApiResponse<UpdateStatusDeliveryResponse>> updateStatusDelivery(
             @PathVariable UUID deliveryId
     ) {
-        UpdateStatusDeliveryResult result = deliveryService.UpdateStatusDelivery(deliveryId);
+        UpdateStatusDeliveryResult result = deliveryService.updateStatusDelivery(deliveryId);
         UpdateStatusDeliveryResponse response = UpdateStatusDeliveryResponse.from(result);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -93,7 +93,7 @@ public class DeliveryController {
     public ResponseEntity<ApiResponse<DeleteDeliveryResponse>> deleteDelivery(
             @PathVariable UUID deliveryId
     ) {
-        DeleteDeliveryResult result = deliveryService.DeleteDelivery(deliveryId);
+        DeleteDeliveryResult result = deliveryService.deleteDelivery(deliveryId);
         DeleteDeliveryResponse response = DeleteDeliveryResponse.from(result);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -107,7 +107,7 @@ public class DeliveryController {
             @RequestBody UpdateDeliveryRequest request
     ) {
         UpdateDeliveryCommand command = request.toCommand();
-        UpdateDeliveryResult result = deliveryService.UpdateDelivery(command,deliveryId);
+        UpdateDeliveryResult result = deliveryService.updateDelivery(command,deliveryId);
         UpdateDeliveryResponse response = UpdateDeliveryResponse.from(result);
 
         return ResponseEntity.status(HttpStatus.OK)

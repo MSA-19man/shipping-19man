@@ -74,7 +74,7 @@ public class DeliveryService {
     }
 
     @Transactional
-    public UpdateStatusDeliveryResult UpdateStatusDelivery(UUID deliveryId) {
+    public UpdateStatusDeliveryResult updateStatusDelivery(UUID deliveryId) {
         Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
                 new IllegalArgumentException("배송을 찾을수 없습니다."));
 
@@ -89,7 +89,7 @@ public class DeliveryService {
      * user와 security가 완성되는대로 업데이트 할 예정입니다.
      */
     @Transactional
-    public DeleteDeliveryResult DeleteDelivery(UUID deliveryId) {
+    public DeleteDeliveryResult deleteDelivery(UUID deliveryId) {
         Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
                 new IllegalArgumentException("배송을 찾을수 없습니다."));
 
@@ -99,7 +99,7 @@ public class DeliveryService {
     }
 
     @Transactional
-    public UpdateDeliveryResult UpdateDelivery(UpdateDeliveryCommand command, UUID deliveryId) {
+    public UpdateDeliveryResult updateDelivery(UpdateDeliveryCommand command, UUID deliveryId) {
         Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
                 new IllegalArgumentException("배송을 찾을수 없습니다."));
 
