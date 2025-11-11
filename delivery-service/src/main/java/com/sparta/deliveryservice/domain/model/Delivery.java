@@ -1,6 +1,7 @@
 package com.sparta.deliveryservice.domain.model;
 
 import com.sparta.common.entity.BaseEntity;
+import com.sparta.deliveryservice.application.dto.UpdateDeliveryCommand;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -89,5 +90,11 @@ public class Delivery extends BaseEntity {
                 .receiverSlackId(receiverSlackId)
                 .companyAgentId(companyAgentId)
                 .build();
+    }
+
+    public void updateDeliveryInfo(UpdateDeliveryCommand command) {
+        this.deliveryAddress = command.deliveryAddress();
+        this.receiverName = command.receiverName();
+        this.receiverSlackId = command.receiverSlackId();
     }
 }

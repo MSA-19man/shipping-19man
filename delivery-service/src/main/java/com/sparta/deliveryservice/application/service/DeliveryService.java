@@ -22,21 +22,12 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
 
     @Transactional
-    public CreateDeliveryResult createDelivery(CreateDeliveryCommand createDeliveryCommand) {
-        if (deliveryRepository.existsByOrderIdAndDeletedAtIsNull(createDeliveryCommand.orderId())) {
+    public CreateDeliveryResult createDelivery(CreateDeliveryCommand command) {
+        if (deliveryRepository.existsByOrderIdAndDeletedAtIsNull(command.orderId())) {
             throw new IllegalArgumentException("이미 해당 주문에 대한 배송이 존재합니다.");
         }
 
-        Delivery delivery = Delivery.of(
-                createDeliveryCommand.orderId(),
-                createDeliveryCommand.userId(),
-                createDeliveryCommand.departureHubId(),
-                createDeliveryCommand.arrivalHubId(),
-                createDeliveryCommand.deliveryAddress(),
-                createDeliveryCommand.receiverName(),
-                createDeliveryCommand.receiverSlackId(),
-                createDeliveryCommand.companyAgentId()
-        );
+        Delivery delivery = command.toEntity();
 
         delivery = deliveryRepository.save(delivery);
 
@@ -83,7 +74,7 @@ public class DeliveryService {
     }
 
     @Transactional
-    public UpdateStatusDeliveryResult UpdateStatusDelivery(UUID deliveryId) {
+    public UpdateStatusDeliveryResult updateStatusDelivery(UUID deliveryId) {
         Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
                 new IllegalArgumentException("배송을 찾을수 없습니다."));
 
@@ -98,13 +89,23 @@ public class DeliveryService {
      * user와 security가 완성되는대로 업데이트 할 예정입니다.
      */
     @Transactional
-    public DeleteDeliveryResult DeleteDelivery(UUID deliveryId) {
+    public DeleteDeliveryResult deleteDelivery(UUID deliveryId) {
         Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
                 new IllegalArgumentException("배송을 찾을수 없습니다."));
 
         delivery.markDeleted(delivery.getUserId()); //임시
         delivery = deliveryRepository.save(delivery);
         return DeleteDeliveryResult.from(delivery);
+    }
+
+    @Transactional
+    public UpdateDeliveryResult updateDelivery(UpdateDeliveryCommand command, UUID deliveryId) {
+        Delivery delivery = deliveryRepository.findByIdAndDeletedAtIsNull(deliveryId).orElseThrow(() ->
+                new IllegalArgumentException("배송을 찾을수 없습니다."));
+
+        delivery.updateDeliveryInfo(command);
+        delivery = deliveryRepository.save(delivery);
+        return UpdateDeliveryResult.from(delivery);
     }
 
     private DeliveryStatus getNextStatus(DeliveryStatus status) {
