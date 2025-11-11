@@ -1,9 +1,9 @@
-package com.sparta.userservice.infra.repository;
+package com.sparta.userservice.user.infra.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.sparta.userservice.domain.model.HubManager;
-import com.sparta.userservice.domain.repository.HubManagerRepository;
+import com.sparta.userservice.user.domain.model.HubManager;
+import com.sparta.userservice.user.domain.repository.HubManagerRepository;
 
 import lombok.RequiredArgsConstructor;
 
