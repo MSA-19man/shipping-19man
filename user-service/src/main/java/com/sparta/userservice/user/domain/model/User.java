@@ -62,7 +62,7 @@ public class User extends BaseEntity {
 	}
 
 	@Builder(access = AccessLevel.PRIVATE)
-	public User(
+	private User(
 		String username,
 		String password,
 		String name,
