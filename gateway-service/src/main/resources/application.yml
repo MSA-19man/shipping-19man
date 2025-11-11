@@ -29,7 +29,7 @@ spring:
         - id: delivery-service
           uri: lb://delivery-service
           predicates:
-            - Path=/v1/deliveries/**
+            - Path=/api/v1/deliveries/**
         - id: company-service
           uri: lb://company-service
           predicates:
