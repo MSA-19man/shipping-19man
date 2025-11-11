@@ -53,7 +53,8 @@ public class DeliveryController {
 
         SearchDeliveryDetailResponse response = SearchDeliveryDetailResponse.from(result);
 
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(response, "배송 상세 조회가 완료되었습니다."));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "배송 상세 조회가 완료되었습니다."));
     }
 
     @Operation(summary = "권한별 배송 다건 조회", description = "권한별 배송을 모두 조회합니다.")
@@ -72,7 +73,8 @@ public class DeliveryController {
 
         Page<SearchDeliveryResponse> responsePage = resultPage.map(SearchDeliveryResponse::from);
         PageResponse<SearchDeliveryResponse> pageResponse = PageResponse.of(responsePage);
-        return ResponseEntity.ok().body(ApiResponse.success(pageResponse, "배송 목록 조회가 완료되었습니다."));
+        return ResponseEntity.ok()
+                .body(ApiResponse.success(pageResponse, "배송 목록 조회가 완료되었습니다."));
     }
 
     @Operation(summary = "배송 상태 변경", description = "배송 상태를 다음 단계로 자동 변경합니다. " +
@@ -84,6 +86,7 @@ public class DeliveryController {
         UpdateStatusDeliveryResult result = deliveryService.UpdateStatusDelivery(deliveryId);
         UpdateStatusDeliveryResponse response = UpdateStatusDeliveryResponse.from(result);
 
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(response, "배송 상태가 변경되었습니다."));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success(response, "배송 상태가 변경되었습니다."));
     }
 }

@@ -88,13 +88,13 @@ public class DeliveryService {
                 new IllegalArgumentException("배송을 찾을수 없습니다."));
 
         DeliveryStatus beforeStatus = delivery.getStatus();
-        DeliveryStatus nextStatus = getNextStauts(beforeStatus);
+        DeliveryStatus nextStatus = getNextStatus(beforeStatus);
         delivery.updateStatus(nextStatus);
         deliveryRepository.save(delivery);
         return UpdateStatusDeliveryResult.from(delivery,beforeStatus);
     }
 
-    private DeliveryStatus getNextStauts(DeliveryStatus status) {
+    private DeliveryStatus getNextStatus(DeliveryStatus status) {
         return switch (status) {
             case HUB_WAITING -> DeliveryStatus.HUB_MOVING;
             case HUB_MOVING -> DeliveryStatus.HUB_ARRIVED;
