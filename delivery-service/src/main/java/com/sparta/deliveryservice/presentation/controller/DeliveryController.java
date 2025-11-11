@@ -11,6 +11,8 @@ import com.sparta.deliveryservice.presentation.request.CreateDeliveryRequest;
 import com.sparta.deliveryservice.presentation.response.CreateDeliveryResponse;
 import com.sparta.deliveryservice.presentation.response.SearchDeliveryDetailResponse;
 import com.sparta.deliveryservice.presentation.response.SearchDeliveryResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -21,12 +23,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/delivery")
+@RequestMapping("/v1/deliveries")
 @RequiredArgsConstructor
+@Tag(name = "배송 API", description = "배송 관련 기능 API입니다.")
 public class DeliveryController {
 
     private final DeliveryService deliveryService;
 
+    @Operation(summary = "배송 생성", description = "주문이 생성된 경우 배송을 생성합니다.")
     @PostMapping
     public ResponseEntity<ApiResponse<CreateDeliveryResponse>> createDelivery(
             @RequestBody CreateDeliveryRequest request) {
@@ -41,6 +45,7 @@ public class DeliveryController {
                 .body(ApiResponse.success(response, "배송이 생성되었습니다."));
     }
 
+    @Operation(summary = "배송 상세 조회", description = "배송을 상세 조회합니다.")
     @GetMapping("/{deliveryId}")
     public ResponseEntity<ApiResponse<SearchDeliveryDetailResponse>> searchDeliveryDetail(
             @PathVariable UUID deliveryId
@@ -53,6 +58,7 @@ public class DeliveryController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(response, "배송 상세 조회가 완료되었습니다."));
     }
 
+    @Operation(summary = "권한별 배송 다건 조회", description = "권한별 배송을 모두 조회합니다.")
     @GetMapping()
     public ResponseEntity<ApiResponse<PageResponse<SearchDeliveryResponse>>> searchDelivery(
             @RequestParam(required = false) Long tempUserId,        // 임시
