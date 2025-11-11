@@ -5,8 +5,6 @@ import com.sparta.hubservice.domain.model.Hub;
 import com.sparta.hubservice.domain.model.HubRoute;
 import com.sparta.hubservice.domain.repository.HubRepository;
 import com.sparta.hubservice.domain.repository.HubRouteRepository;
-import com.sparta.hubservice.infra.repository.JpaRepository.HubRouteJpaRepository;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

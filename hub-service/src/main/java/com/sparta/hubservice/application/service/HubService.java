@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HubService {
 
 	private final HubRepository hubRepository;
+	private final HubRouteService hubRouteService;
 
 	@Transactional
 	public CreateHubResult createHub(CreateHubCommand command) {
@@ -37,6 +38,9 @@ public class HubService {
 
 		Hub savedHub = hubRepository.save(newHub);
 		log.info("허브 생성 완료 - hub id: " + savedHub.getId());
+
+		// 새로 생긴 허브-중앙 허브 경로(segment) 생성
+		hubRouteService.createSegmentsForNewHub(savedHub);
 
 		return CreateHubResult.from(savedHub);
 	}
