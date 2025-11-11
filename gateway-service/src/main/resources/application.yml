@@ -2,10 +2,11 @@ server:
   port: 19091
 
 spring:
-  main:
-    web-application-type: reactive
   application:
     name: gateway-service
+
+  main:
+    web-application-type: reactive
 
   cloud:
     gateway:
@@ -25,21 +26,18 @@ spring:
           predicates:
             - Path=/v1/products/**
 
+        - id: delivery-service
+          uri: lb://delivery-service
+          predicates:
+            - Path=/api/v1/deliveries/**
         - id: company-service
           uri: lb://company-service
           predicates:
             - Path=/v1/companies/**
-
         - id: hub-service
           uri: lb://hub-service
           predicates:
             - Path=/v1/hubs/**
-
-        - id: delivery-service
-          uri: lb://delivery-service
-          predicates:
-            - Path=/v1/deliveries/**
-
         - id: ai-service
           uri: lb://ai-service
           predicates:
@@ -54,9 +52,25 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/v1/auth/**
-      discovery:
-        locator:
-          enabled: false
+        # Swagger 문서용 라우팅
+        - id: delivery-service-api-docs
+          uri: lb://delivery-service
+          predicates:
+            - Path=/delivery-service/api-docs/**
+          filters:
+            - RewritePath=/delivery-service/api-docs, /api-docs
+        - id: company-service-api-docs
+          uri: lb://company-service
+          predicates:
+            - Path=/company-service/api-docs/**
+          filters:
+            - RewritePath=/company-service/api-docs, /api-docs
+        - id: hub-service-api-docs
+          uri: lb://hub-service
+          predicates:
+            - Path=/hub-service/api-docs/**
+          filters:
+            - RewritePath=/hub-service/api-docs, /api-docs
 
 eureka:
   client:
@@ -64,3 +78,15 @@ eureka:
       defaultZone: http://localhost:19090/eureka/
     register-with-eureka: true
     fetch-registry: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    urls:
+      - name: delivery-service
+        url: /delivery-service/api-docs
+      - name: hub-service
+        url: /hub-service/api-docs
+      - name: company-service
+        url: /company-service/api-docs

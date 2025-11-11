@@ -9,6 +9,7 @@ import java.util.UUID;
 public record CreateDeliveryResult(
         UUID deliveryId,
         UUID orderId,
+        Long userId,
         DeliveryStatus status,
         UUID departureHubId,
         UUID arrivalHubId,
@@ -23,6 +24,7 @@ public record CreateDeliveryResult(
         return new CreateDeliveryResult(
                 delivery.getId(),
                 delivery.getOrderId(),
+                delivery.getUserId(),
                 delivery.getStatus(),
                 delivery.getDepartureHubId(),
                 delivery.getArrivalHubId(),
