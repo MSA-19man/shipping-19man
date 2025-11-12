@@ -1,10 +1,8 @@
 package com.sparta.hubservice.presentation.controller;
 
-import com.sparta.common.response.ApiResponse;
 import com.sparta.hubservice.application.dto.DijkstraRouteResult;
 import com.sparta.hubservice.application.service.DijkstraService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,12 +18,11 @@ public class HubRouteInternalController {
     private final DijkstraService dijkstraService;
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<DijkstraRouteResult>> findPath(
-            @RequestParam UUID start,
-            @RequestParam UUID end
+    public DijkstraRouteResult findPath(
+            @RequestParam(name = "start") UUID start,
+            @RequestParam(name = "end") UUID end
     ){
-        DijkstraRouteResult result = dijkstraService.findPath(start, end);
 
-        return ResponseEntity.ok(ApiResponse.success(result));
+        return dijkstraService.findPath(start, end);
     }
 }

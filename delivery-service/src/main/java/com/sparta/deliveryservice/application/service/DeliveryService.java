@@ -144,7 +144,7 @@ public class DeliveryService {
                         segment.arrivalHubId(),
                         sequence++,
                         segment.distance(),
-                        segment.requiredTime()
+                        segment.timeInMinutes()
                 );
                 deliveryRouteRepository.save(deliveryRoute);
             }

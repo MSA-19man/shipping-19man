@@ -7,6 +7,6 @@ public record RouteSegmentDto(
         UUID arrivalHubId,
         Integer sequence,
         Double distance,
-        Integer requiredTime
+        Integer timeInMinutes
 ) {
 }
