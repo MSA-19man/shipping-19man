@@ -38,5 +38,4 @@ public class DeliveryRoute extends BaseEntity {
     private Double actualDistance;
 
     private Integer actualDuration;
-
 }
