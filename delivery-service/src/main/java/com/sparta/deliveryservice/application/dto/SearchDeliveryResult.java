@@ -14,8 +14,7 @@ public record SearchDeliveryResult(
         UUID departureHubId,
         UUID arrivalHubId,
         String deliveryAddress,
-        String receiverName,
-        String receiverSlackId,
+        String receiverCompany,
         UUID companyAgentId,
         LocalDateTime createdAt,
         Long createdBy
@@ -29,8 +28,7 @@ public record SearchDeliveryResult(
                 delivery.getDepartureHubId(),
                 delivery.getArrivalHubId(),
                 delivery.getDeliveryAddress(),
-                delivery.getReceiverName(),
-                delivery.getReceiverSlackId(),
+                delivery.getReceiverCompany(),
                 delivery.getCompanyAgentId(),
                 delivery.getCreatedAt(),
                 delivery.getCreatedBy()

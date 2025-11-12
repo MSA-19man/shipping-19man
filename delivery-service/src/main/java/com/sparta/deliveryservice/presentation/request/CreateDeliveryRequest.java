@@ -10,9 +10,7 @@ public record CreateDeliveryRequest(
         UUID departureHubId,
         UUID arrivalHubId,
         String deliveryAddress,
-        String receiverName,
-        String receiverSlackId,
-        UUID companyAgentId
+        String receiverCompany
 ) {
     public CreateDeliveryCommand toCommand() {
         return new CreateDeliveryCommand(
@@ -21,9 +19,7 @@ public record CreateDeliveryRequest(
                 this.departureHubId,
                 this.arrivalHubId,
                 this.deliveryAddress,
-                this.receiverName,
-                this.receiverSlackId,
-                this.companyAgentId
+                this.receiverCompany
         );
     }
 }

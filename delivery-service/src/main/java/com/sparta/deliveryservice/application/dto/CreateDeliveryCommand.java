@@ -10,9 +10,7 @@ public record CreateDeliveryCommand(
         UUID departureHubId,
         UUID arrivalHubId,
         String deliveryAddress,
-        String receiverName,
-        String receiverSlackId,
-        UUID companyAgentId
+        String receiverCompany
 ) {
     public Delivery toEntity(){
         return Delivery.of(
@@ -21,9 +19,7 @@ public record CreateDeliveryCommand(
                 this.departureHubId,
                 this.arrivalHubId,
                 this.deliveryAddress,
-                this.receiverName,
-                this.receiverSlackId,
-                this.companyAgentId
+                this.receiverCompany
         );
     }
 }
