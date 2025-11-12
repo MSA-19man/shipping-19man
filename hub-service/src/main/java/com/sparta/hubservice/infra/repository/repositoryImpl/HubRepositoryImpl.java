@@ -2,6 +2,7 @@ package com.sparta.hubservice.infra.repository.repositoryImpl;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +30,20 @@ public class HubRepositoryImpl implements HubRepository {
 		return jpaRepository.findAll(pageable);
 	}
 
-	@Override
-	public Optional<Hub> findById(UUID hubId) {
-		return jpaRepository.findById(hubId);
-	}
+    @Override
+    public Optional<Hub> findById(UUID hubId){
+        return jpaRepository.findById(hubId);
+    }
+
+    @Override
+    public List<Hub> findAll() {
+        return jpaRepository.findAll();
+    }
+
+    @Override
+    public List<Hub> findAllByNameIn(List<String> names) {
+        return jpaRepository.findAllByNameIn(names);
+    }
 
 	@Override
 	public Boolean existsByIdAndDeletedAtIsNull(UUID hubId) {

@@ -13,12 +13,16 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
         default_schema: hub_schema
         format_sql: true
+  sql:
+    init:
+      mode: always
 
 eureka:
   client:
