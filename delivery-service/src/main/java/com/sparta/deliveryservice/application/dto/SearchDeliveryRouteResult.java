@@ -13,7 +13,9 @@ public record SearchDeliveryRouteResult(
         Integer sequence,
         DeliveryRouteStatus status,
         Double actualDistance,
-        Integer actualDuration
+        Integer actualDuration,
+        Double estimatedDistance,
+        Integer estimatedDuration
 ) {
     public static SearchDeliveryRouteResult from(DeliveryRoute route){
         return new SearchDeliveryRouteResult(
@@ -24,7 +26,9 @@ public record SearchDeliveryRouteResult(
                 route.getSequence(),
                 route.getStatus(),
                 route.getActualDistance(),
-                route.getActualDuration()
+                route.getActualDuration(),
+                route.getEstimatedDistance(),
+                route.getEstimatedDuration()
         );
     }
 }

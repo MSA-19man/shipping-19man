@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/hub-routes")
-public class HubRouteController {
+@RequestMapping("/internal/v1/hub-routes")
+public class HubRouteInternalController {
 
     private final DijkstraService dijkstraService;
 

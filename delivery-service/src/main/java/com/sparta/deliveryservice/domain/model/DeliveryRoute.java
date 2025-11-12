@@ -35,7 +35,39 @@ public class DeliveryRoute extends BaseEntity {
     @Column(nullable = false)
     private DeliveryRouteStatus status;
 
+    @Column(nullable = false)
+    private Double estimatedDistance;
+
+    @Column(nullable = false)
+    private Integer estimatedDuration;
+
     private Double actualDistance;
 
     private Integer actualDuration;
+
+
+    public static DeliveryRoute of(
+            Delivery delivery,
+            UUID departureHubId,
+            UUID arrivalHubId,
+            Integer sequence,
+            Double estimatedDistance,
+            Integer estimatedDuration
+
+    ) {
+        DeliveryRoute route = new DeliveryRoute();
+        route.delivery = delivery;
+        route.departureHubId = departureHubId;
+        route.arrivalHubId = arrivalHubId;
+        route.sequence = sequence;
+        route.estimatedDistance = estimatedDistance;
+        route.estimatedDuration = estimatedDuration;
+        route.status = DeliveryRouteStatus.PENDING;
+        return route;
+    }
+
+    public void updateActualRouteInfo(Double distance, Integer duration){
+        this.actualDistance = distance;
+        this.actualDuration = duration;
+    }
 }
