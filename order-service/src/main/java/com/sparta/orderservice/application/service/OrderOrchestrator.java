@@ -73,9 +73,11 @@ public class OrderOrchestrator {
 				userId,
 				supplier.hubId(),
 				receiver.hubId(),
-				receiver.address(),
+				receiver.companyAddress(),
 				receiver.name()
 			);
+			log.info("orderId : {}, userId :{}, hubId: {}, address: {}, name: {}"
+				, orderId, userId, receiver.hubId(), receiver.companyAddress(), receiver.name());
 
 			log.info("주문 성공: orderId: {}", savedOrder.getId());
 			return savedOrder;
