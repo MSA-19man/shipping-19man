@@ -15,7 +15,6 @@ public record SearchDeliveryResponse(
         UUID arrivalHubId,
         String deliveryAddress,
         String receiverName,
-        String receiverSlackId,
         UUID companyAgentId,
         LocalDateTime createdAt,
         Long createdBy
@@ -30,8 +29,7 @@ public record SearchDeliveryResponse(
                 result.departureHubId(),
                 result.arrivalHubId(),
                 result.deliveryAddress(),
-                result.receiverName(),
-                result.receiverSlackId(),
+                result.receiverCompany(),
                 result.companyAgentId(),
                 result.createdAt(),
                 result.createdBy()

@@ -10,8 +10,7 @@ public record UpdateDeliveryResult(
         UUID orderId,
         DeliveryStatus status,
         String deliveryAddress,
-        String receiverName,
-        String receiverSlackId
+        String receiverCompany
 ) {
     public static UpdateDeliveryResult from(Delivery delivery){
         return new UpdateDeliveryResult(
@@ -19,8 +18,7 @@ public record UpdateDeliveryResult(
                 delivery.getOrderId(),
                 delivery.getStatus(),
                 delivery.getDeliveryAddress(),
-                delivery.getReceiverName(),
-                delivery.getReceiverSlackId()
+                delivery.getReceiverCompany()
         );
     }
 }
