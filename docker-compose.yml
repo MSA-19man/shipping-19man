@@ -22,6 +22,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  redis-cache:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    networks:
+      - "logistics-network"
 
 volumes:
   postgres-data:
