@@ -29,7 +29,7 @@ spring:
         - id: product-service
           uri: lb://product-service
           predicates:
-            - Path=/v1/products/**
+            - Path=/api/v1/products/**
 
         - id: delivery-service
           uri: lb://delivery-service
@@ -38,11 +38,11 @@ spring:
         - id: company-service
           uri: lb://company-service
           predicates:
-            - Path=/v1/companies/**
+            - Path=/api/v1/companies/**
         - id: hub-service
           uri: lb://hub-service
           predicates:
-            - Path=/v1/hubs/**
+            - Path=/api/v1/hubs/**
         - id: ai-service
           uri: lb://ai-service
           predicates:
@@ -78,6 +78,12 @@ spring:
             - Path=/order-service/api-docs/**
           filters:
             - RewritePath=/order-service/api-docs, /api-docs
+        - id: product-service-api-docs
+          uri: lb://product-service
+          predicates:
+            - Path=/product-service/api-docs/**
+          filters:
+            - RewritePath=/product-service/api-docs, /api-docs
 
 # 접근을 허용할 url
 gateway:

@@ -15,16 +15,20 @@ import com.sparta.productservice.domain.model.Product;
 import com.sparta.productservice.presentation.request.CreateProductRequest;
 import com.sparta.productservice.presentation.response.CreateProductResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/products")
+@RequestMapping("/api/v1/products")
+@Tag(name = "상품 API", description = "상품 관련 기능 API입니다.")
 public class ProductController {
 
 	private final ProductService productService;
 
+	@Operation(summary = "상품 생성", description = "상품을 생성할 수 있습니다.")
 	@PostMapping
 	public ResponseEntity<ApiResponse<CreateProductResponse>> createProduct(
 		@Valid @RequestBody CreateProductRequest request) {

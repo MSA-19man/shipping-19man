@@ -31,6 +31,9 @@ public class SwaggerResourceProvider {
 		// Order Service
 		urls.add(createSwaggerUrl("order-service", "/order-service/api-docs"));
 
+		// Product Service
+		urls.add(createSwaggerUrl("product-service", "/product-service/api-docs"));
+
 		return urls;
 	}
 

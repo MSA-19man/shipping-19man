@@ -2,6 +2,7 @@ package com.sparta.companyservice.application.dto;
 
 import java.util.UUID;
 
+import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.domain.model.CompanyType;
 
 import lombok.Builder;
@@ -13,4 +14,12 @@ public record CreateCompanyCommand(
 	UUID hubId,
 	String companyAddress
 ) {
+	public Company toEntity() {
+		return Company.of(
+			name,
+			type,
+			hubId,
+			companyAddress
+		);
+	}
 }
