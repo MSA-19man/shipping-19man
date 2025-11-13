@@ -57,7 +57,7 @@ public class User extends BaseEntity {
 	@PrePersist
 	public void prePersist() {
 		if (this.status == null) {
-			this.status = ApprovalStatus.PENDING;
+			this.status = ApprovalStatus.APPROVED; // 회원가입 승인 로직을 구현해야 하지만 우선순위에 밀려 추후에 구현하는것으로...
 		}
 	}
 

@@ -1,15 +1,13 @@
 package com.sparta.hubservice.presentation.controller;
 
-import java.util.UUID;
-
+import com.sparta.hubservice.application.service.HubService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sparta.hubservice.application.service.HubService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/internal/v1/hubs")
