@@ -27,15 +27,7 @@ public class SecurityConfig {
 				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
-			.rememberMe(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/api/v1/users/signup").permitAll()
-					.requestMatchers("/error").permitAll()
-					.requestMatchers("/internal/**").permitAll()
-					.requestMatchers("/actuator/**").permitAll()
-					.anyRequest().permitAll()
-				// .anyRequest().authenticated()
-			);
+			.rememberMe(AbstractHttpConfigurer::disable);
 
 		return http.build();
 	}
