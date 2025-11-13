@@ -64,11 +64,14 @@ public class DeliveryAgentService {
 
     @Transactional
     public CreateDeliveryAgentResult createDeliveryAgent(CreateDeliveryAgentCommand command){
-
-        Integer emptyIndex = findEmptyCompanyAgentIndex(command.hubId());
-
+        Integer emptyIndex;
+        if (command.hubId() == null){
+            emptyIndex = findEmptyHubAgentIndex();
+        } else {
+            emptyIndex = findEmptyCompanyAgentIndex(command.hubId());
+        }
         if (emptyIndex == null){
-            throw new IllegalArgumentException("해당 허브의 업체 배송담당자가 모두 배정되어있습니다 (최대10명)");
+            throw new IllegalArgumentException("배송담당자가 모두 배정되어있습니다 (최대10명)");
         }
         DeliveryAgent agent = command.toEntity(emptyIndex);
         deliveryAgentRepository.save(agent);
@@ -106,7 +109,7 @@ public class DeliveryAgentService {
                 .toList();
 
         List<Integer> useIndex = deliveryAgentRepository.findAllByDeliveryIndexIsNotNullAndAgentTypeAndHubIdAndDeletedAtIsNull(
-                DeliveryAgentType.HUB_AGENT,hubId)
+                DeliveryAgentType.COMPANY_AGENT,hubId)
                 .stream()
                 .map(DeliveryAgent::getDeliveryIndex)
                 .toList();
