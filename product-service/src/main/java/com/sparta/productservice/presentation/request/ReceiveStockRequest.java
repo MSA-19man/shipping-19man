@@ -4,9 +4,10 @@ import java.util.UUID;
 
 import com.sparta.productservice.application.dto.DeductStockCommand;
 
-public record DeductStockRequest(
+public record ReceiveStockRequest(
 	Integer quantity
 ) {
+
 	public DeductStockCommand toCommand(UUID productId) {
 		return DeductStockCommand.builder()
 			.productId(productId)

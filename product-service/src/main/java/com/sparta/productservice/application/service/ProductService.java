@@ -75,6 +75,25 @@ public class ProductService {
 		}
 	}
 
+	public Product findById(UUID productId) {
+		return productRepository.findById(productId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 상품을 찾지 못했습니다."));
+	}
+
+	@Transactional
+	public Product addStock(DeductStockCommand command) {
+		UUID productId = command.productId();
+
+		Product product = productRepository.findById(productId)
+			.orElseThrow(
+				() -> new IllegalArgumentException("존재하지 않는 상품입니다. productId=" + productId)
+			);
+
+		product.addStock(command.quantity());
+
+		return productRepository.save(product);
+	}
+
 	private CompanyResponse validateCompany(CreateProductCommand command) {
 		try {
 			return companyClient.getCompany(command.companyId());
