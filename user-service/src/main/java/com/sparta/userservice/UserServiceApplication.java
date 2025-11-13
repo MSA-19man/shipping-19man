@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableFeignClients
 @EnableJpaAuditing
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+	"com.sparta.userservice",
+	"com.sparta.common.security"
+})
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

@@ -13,6 +13,9 @@ repositories {
 }
 
 dependencies {
+    api 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+    api 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter'
     api 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.17.2'
