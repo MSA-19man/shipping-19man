@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -35,10 +36,10 @@ public class HubRepositoryImpl implements HubRepository {
         return jpaRepository.findById(hubId);
     }
 
-    @Override
-    public List<Hub> findAll() {
-        return jpaRepository.findAll();
-    }
+    // @Override
+    // public List<Hub> findAll() {
+    //     return jpaRepository.findAll();
+    // }
 
     @Override
     public List<Hub> findAllByNameIn(List<String> names) {
@@ -48,5 +49,11 @@ public class HubRepositoryImpl implements HubRepository {
 	@Override
 	public Boolean existsByIdAndDeletedAtIsNull(UUID hubId) {
 		return jpaRepository.existsByIdAndDeletedAtIsNull(hubId);
+	}
+
+	@Cacheable(value = "hubs")
+	@Override
+	public List<Hub> findAll() {
+		return jpaRepository.findAll();
 	}
 }

@@ -11,14 +11,9 @@ import java.util.List;
 
 public interface HubRepository {
 	Hub save(Hub hub);
-
 	Page<Hub> findAll(Pageable pageable);
-
     List<Hub> findAll();
-
     Optional<Hub> findById(UUID hubId);
-
     List<Hub> findAllByNameIn(List<String> names);
-
 	Boolean existsByIdAndDeletedAtIsNull(UUID hubId);
 }

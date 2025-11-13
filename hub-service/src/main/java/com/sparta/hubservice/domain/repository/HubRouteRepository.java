@@ -14,13 +14,13 @@ public interface HubRouteRepository {
     //ApplicationRunner에서 사용 - 데이터 존재 여부
     long count();
 
+    List<HubRoute> findAll();
+
     // HubRouteService - 단건 저장
     HubRoute save(HubRoute hubRoute);
 
     // 단건 조회
     Optional<HubRoute> findById(UUID id);
 
-
-    List<HubRoute> findAll();
     // Todo 출발/도착지 별로 조회하기..
 }
