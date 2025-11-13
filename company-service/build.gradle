@@ -14,7 +14,7 @@ dependencies {
 //    implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    runtimeOnly 'org.postgresql:postgresql:42.7.7'
+    runtimeOnly 'org.postgresql:postgresql'
     // .env 파일 환경변수 로드
     implementation 'me.paulschwarz:spring-dotenv:4.0.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
