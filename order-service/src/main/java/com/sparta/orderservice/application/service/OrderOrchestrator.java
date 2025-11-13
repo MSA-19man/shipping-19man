@@ -1,9 +1,5 @@
 package com.sparta.orderservice.application.service;
 
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
 import com.sparta.orderservice.application.dto.CreateOrderCommand;
 import com.sparta.orderservice.domain.client.CompanyClient;
 import com.sparta.orderservice.domain.client.DeliveryMessagePublisher;
@@ -12,9 +8,11 @@ import com.sparta.orderservice.domain.client.dto.CompanyInfo;
 import com.sparta.orderservice.domain.client.dto.ProductStockInfo;
 import com.sparta.orderservice.domain.model.Order;
 import com.sparta.orderservice.domain.model.OrderStatus;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -73,7 +71,7 @@ public class OrderOrchestrator {
 				userId,
 				supplier.hubId(),
 				receiver.hubId(),
-				receiver.address(),
+				receiver.companyAddress(),
 				receiver.name()
 			);
 
