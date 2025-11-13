@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sparta.common.util.PageableUtil;
 import com.sparta.companyservice.application.dto.CreateCompanyCommand;
 import com.sparta.companyservice.application.dto.FindCompanyResult;
 import com.sparta.companyservice.application.dto.GetCompanyResult;
@@ -32,12 +34,7 @@ public class CompanyService {
 			throw new IllegalArgumentException("이미 존재하는 업체명입니다.");
 		}
 
-		Company company = Company.of(
-			command.name(),
-			command.type(),
-			command.hubId(),
-			command.companyAddress()
-		);
+		Company company = command.toEntity();
 
 		Company savedCompany = companyRepository.save(company);
 		log.info("[CompanyService] 업체 생성 완료 - companyId={}", savedCompany.getId());
@@ -50,7 +47,13 @@ public class CompanyService {
 		return FindCompanyResult.from(company);
 	}
 
-	public Page<GetCompanyResult> getCompanies(Pageable pageable) {
+	public Page<GetCompanyResult> getCompanies(int page, int size, Sort.Direction direction) {
+		Pageable pageable = PageableUtil.makePageable(
+			page,
+			size,
+			PageableUtil.order(direction, "createdAt")
+		);
+
 		Page<Company> companies = companyRepository.findAll(pageable);
 		return companies.map(GetCompanyResult::from);
 	}
