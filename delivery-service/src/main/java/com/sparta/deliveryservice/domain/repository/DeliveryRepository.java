@@ -21,7 +21,7 @@ public interface DeliveryRepository {
     Page<Delivery> findAllByDeletedAtIsNull(Pageable pageable);
 
     /**
-     * 업체 담당자 - userId로 조회
+     * 주문한 업체 담당자 - userId로 조회
      * 배송 담당자 - userId로 조회
      */
     Page<Delivery> findAllByUserIdAndDeletedAtIsNull(Long userId, Pageable pageable);
