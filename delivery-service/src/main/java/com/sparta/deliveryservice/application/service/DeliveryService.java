@@ -3,8 +3,13 @@ package com.sparta.deliveryservice.application.service;
 import com.sparta.common.util.PageableUtil;
 import com.sparta.deliveryservice.application.dto.*;
 import com.sparta.deliveryservice.domain.model.Delivery;
+import com.sparta.deliveryservice.domain.model.DeliveryRoute;
 import com.sparta.deliveryservice.domain.model.DeliveryStatus;
 import com.sparta.deliveryservice.domain.repository.DeliveryRepository;
+import com.sparta.deliveryservice.domain.repository.DeliveryRouteRepository;
+import com.sparta.deliveryservice.infrastructure.client.HubFeignClient;
+import com.sparta.deliveryservice.infrastructure.client.dto.DeliveryRouteCalcResult;
+import com.sparta.deliveryservice.infrastructure.client.dto.RouteSegmentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +25,9 @@ import java.util.UUID;
 public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
+    private final DeliveryRouteRepository deliveryRouteRepository;
+    private final HubFeignClient hubFeignClient;
+    private final DeliveryAgentService deliveryAgentService;
 
     @Transactional
     public CreateDeliveryResult createDelivery(CreateDeliveryCommand command) {
@@ -30,7 +38,8 @@ public class DeliveryService {
         Delivery delivery = command.toEntity();
 
         delivery = deliveryRepository.save(delivery);
-
+        assignDeliveryAgent(delivery);
+        createDeliveryRoute(delivery);
         return CreateDeliveryResult.from(delivery);
     }
 
@@ -117,5 +126,41 @@ public class DeliveryService {
             case COMPLETED -> throw new IllegalStateException("이미 배송이 완료되었습니다.");
             default -> throw new IllegalStateException("잘못된 요청입니다.");
         };
+    }
+
+    private void createDeliveryRoute(Delivery delivery){
+        try {
+            DeliveryRouteCalcResult routeCalcResult = hubFeignClient.findPath(
+                    delivery.getDepartureHubId(),
+                    delivery.getArrivalHubId()
+            );
+            if (routeCalcResult == null || routeCalcResult.segments() == null){
+                throw new IllegalArgumentException("배송 경로 생성이 실패 하였습니다");
+            }
+
+            int sequence = 1;
+            for (RouteSegmentDto segment : routeCalcResult.segments()){
+                DeliveryRoute deliveryRoute = DeliveryRoute.of(
+                        delivery,
+                        segment.departureHubId(),
+                        segment.arrivalHubId(),
+                        sequence++,
+                        segment.distance(),
+                        segment.timeInMinutes()
+                );
+                deliveryRouteRepository.save(deliveryRoute);
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    private void assignDeliveryAgent(Delivery delivery){
+        UUID companyAgentId = deliveryAgentService.assignCompanyAgent(delivery.getArrivalHubId());
+        if (companyAgentId == null){
+            throw new IllegalArgumentException("배송 담당자 배정이 실패했습니다.");
+        }
+        delivery.assignCompanyAgent(companyAgentId);
+        deliveryRepository.save(delivery);
     }
 }

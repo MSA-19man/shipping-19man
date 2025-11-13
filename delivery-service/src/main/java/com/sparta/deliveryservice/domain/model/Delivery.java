@@ -36,12 +36,8 @@ public class Delivery extends BaseEntity {
     private String deliveryAddress;
 
     @Column(nullable = false)
-    private String receiverName;
+    private String receiverCompany;
 
-    @Column(nullable = false)
-    private String receiverSlackId;
-
-    @Column(nullable = false)
     private UUID companyAgentId;
 
     @Enumerated(EnumType.STRING)
@@ -57,18 +53,14 @@ public class Delivery extends BaseEntity {
                      UUID departureHubId,
                      UUID arrivalHubId,
                      String deliveryAddress,
-                     String receiverName,
-                     String receiverSlackId,
-                     UUID companyAgentId,
-                     DeliveryStatus status) {
+                     String receiverCompany) {
         this.orderId = orderId;
         this.userId = userId;
         this.departureHubId = departureHubId;
         this.arrivalHubId = arrivalHubId;
         this.deliveryAddress = deliveryAddress;
-        this.receiverName = receiverName;
-        this.receiverSlackId = receiverSlackId;
-        this.companyAgentId = companyAgentId;
+        this.receiverCompany = receiverCompany;
+        this.companyAgentId = null;
         this.status = DeliveryStatus.HUB_WAITING;
     }
 
@@ -77,24 +69,23 @@ public class Delivery extends BaseEntity {
                               UUID departureHubId,
                               UUID arrivalHubId,
                               String deliveryAddress,
-                              String receiverName,
-                              String receiverSlackId,
-                              UUID companyAgentId) {
+                              String receiverCompany) {
         return Delivery.builder()
                 .orderId(orderId)
                 .userId(userId)
                 .departureHubId(departureHubId)
                 .arrivalHubId(arrivalHubId)
                 .deliveryAddress(deliveryAddress)
-                .receiverName(receiverName)
-                .receiverSlackId(receiverSlackId)
-                .companyAgentId(companyAgentId)
+                .receiverCompany(receiverCompany)
                 .build();
     }
 
     public void updateDeliveryInfo(UpdateDeliveryCommand command) {
         this.deliveryAddress = command.deliveryAddress();
-        this.receiverName = command.receiverName();
-        this.receiverSlackId = command.receiverSlackId();
+        this.receiverCompany = command.receiverCompany();
+    }
+
+    public void assignCompanyAgent(UUID companyAgentId){
+        this.companyAgentId = companyAgentId;
     }
 }

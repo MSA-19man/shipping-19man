@@ -15,8 +15,7 @@ public record CreateDeliveryResponse(
         UUID departureHubId,
         UUID arrivalHubId,
         String deliveryAddress,
-        String receiverName,
-        String receiverSlackId,
+        String receiverCompany,
         UUID companyAgentId
 ) {
     public static CreateDeliveryResponse from(CreateDeliveryResult result) {
@@ -28,8 +27,7 @@ public record CreateDeliveryResponse(
                 .departureHubId(result.departureHubId())
                 .arrivalHubId(result.arrivalHubId())
                 .deliveryAddress(result.deliveryAddress())
-                .receiverName(result.receiverName())
-                .receiverSlackId(result.receiverSlackId())
+                .receiverCompany(result.receiverCompany())
                 .companyAgentId(result.companyAgentId())
                 .build();
     }

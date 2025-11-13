@@ -9,6 +9,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sparta.productservice.application.dto.AddStockCommand;
 import com.sparta.productservice.application.dto.CreateProductCommand;
 import com.sparta.productservice.application.dto.DeductStockCommand;
 import com.sparta.productservice.domain.model.Product;
@@ -73,6 +74,24 @@ public class ProductService {
 				command.productId());
 			throw e;
 		}
+	}
+
+	public Product findById(UUID productId) {
+		return productRepository.findById(productId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 상품을 찾지 못했습니다."));
+	}
+
+	@Transactional
+	public void addStock(AddStockCommand command) {
+		UUID productId = command.productId();
+
+		Product product = productRepository.findById(productId)
+			.orElseThrow(
+				() -> new IllegalArgumentException("존재하지 않는 상품입니다. productId=" + productId)
+			);
+
+		product.addStock(command.quantity());
+		productRepository.save(product);
 	}
 
 	private CompanyResponse validateCompany(CreateProductCommand command) {
