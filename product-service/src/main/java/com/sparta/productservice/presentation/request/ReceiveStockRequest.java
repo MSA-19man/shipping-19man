@@ -2,14 +2,14 @@ package com.sparta.productservice.presentation.request;
 
 import java.util.UUID;
 
-import com.sparta.productservice.application.dto.DeductStockCommand;
+import com.sparta.productservice.application.dto.AddStockCommand;
 
 public record ReceiveStockRequest(
 	Integer quantity
 ) {
 
-	public DeductStockCommand toCommand(UUID productId) {
-		return DeductStockCommand.builder()
+	public AddStockCommand toCommand(UUID productId) {
+		return AddStockCommand.builder()
 			.productId(productId)
 			.quantity(quantity)
 			.build();

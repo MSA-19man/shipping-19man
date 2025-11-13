@@ -1,4 +1,12 @@
 package com.sparta.productservice.application.dto;
 
-public class AddStockCommand {
+import java.util.UUID;
+
+import lombok.Builder;
+
+@Builder
+public record AddStockCommand(
+	UUID productId,
+	int quantity
+) {
 }

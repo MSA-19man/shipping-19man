@@ -9,6 +9,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sparta.productservice.application.dto.AddStockCommand;
 import com.sparta.productservice.application.dto.CreateProductCommand;
 import com.sparta.productservice.application.dto.DeductStockCommand;
 import com.sparta.productservice.domain.model.Product;
@@ -81,7 +82,7 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Product addStock(DeductStockCommand command) {
+	public void addStock(AddStockCommand command) {
 		UUID productId = command.productId();
 
 		Product product = productRepository.findById(productId)
@@ -90,8 +91,7 @@ public class ProductService {
 			);
 
 		product.addStock(command.quantity());
-
-		return productRepository.save(product);
+		productRepository.save(product);
 	}
 
 	private CompanyResponse validateCompany(CreateProductCommand command) {
