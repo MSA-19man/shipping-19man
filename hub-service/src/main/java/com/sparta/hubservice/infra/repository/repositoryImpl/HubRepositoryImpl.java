@@ -14,7 +14,9 @@ import com.sparta.hubservice.domain.repository.HubRepository;
 import com.sparta.hubservice.infra.repository.JpaRepository.HubJpaRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class HubRepositoryImpl implements HubRepository {
@@ -54,6 +56,7 @@ public class HubRepositoryImpl implements HubRepository {
 	@Cacheable(value = "hubs")
 	@Override
 	public List<Hub> findAll() {
+		log.info("DB에서 hub 목록 조회");
 		return jpaRepository.findAll();
 	}
 }

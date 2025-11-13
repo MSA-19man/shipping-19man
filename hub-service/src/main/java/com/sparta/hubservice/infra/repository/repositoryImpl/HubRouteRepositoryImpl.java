@@ -4,6 +4,7 @@ import com.sparta.hubservice.domain.model.HubRoute;
 import com.sparta.hubservice.domain.repository.HubRouteRepository;
 import com.sparta.hubservice.infra.repository.JpaRepository.HubRouteJpaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class HubRouteRepositoryImpl implements HubRouteRepository {
@@ -46,6 +48,7 @@ public class HubRouteRepositoryImpl implements HubRouteRepository {
     @Cacheable(value = "hubRoutes")
     @Override
     public List<HubRoute> findAll(){
+        log.info("DB에서 Hub Route 조회");
         return jpaRepository.findAll();
     }
 }
