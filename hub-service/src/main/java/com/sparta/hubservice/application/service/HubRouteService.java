@@ -48,11 +48,18 @@ public class HubRouteService {
 
         // 세그먼트 생성 (허브->중앙허브, 중앙허브->허브)
         // Todo ai로 실제값 조회해오기 -> 일단은 하드코딩
-        double dummyDistance = 10.0;
-        int dummyTime = 10;
+//        double dummyDistance = 10.0;
+//        int dummyTime = 10;
 
-        HubRoute segment1 = HubRoute.of(newHub, assignedCentralHub, dummyDistance, dummyTime);
-        HubRoute segment2 = HubRoute.of(assignedCentralHub, newHub, dummyDistance, dummyTime);
+        double realDistance = calculateDistance(
+                newHub.getLatitude(), newHub.getLongitude(),
+                assignedCentralHub.getLatitude(), assignedCentralHub.getLongitude()
+        );
+
+        int realTimeInMinutes = (int) ((realDistance/70.0)*60);
+
+        HubRoute segment1 = HubRoute.of(newHub, assignedCentralHub, realDistance, realTimeInMinutes);
+        HubRoute segment2 = HubRoute.of(assignedCentralHub, newHub, realDistance, realTimeInMinutes);
 
         hubRouteRepository.saveAll(Arrays.asList(segment1, segment2));
         log.info("세그먼트 생성 완료");
