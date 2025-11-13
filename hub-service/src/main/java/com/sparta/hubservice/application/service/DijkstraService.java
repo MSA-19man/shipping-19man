@@ -26,6 +26,7 @@ public class DijkstraService {
     private record Node(Hub hub, int time) implements Comparable<Node> {
         @Override
         public int compareTo(Node other){
+            // 더 짧은 time이 우선순위 높도록
             return Integer.compare(this.time, other.time);
         }
     }
@@ -39,10 +40,11 @@ public class DijkstraService {
             graph.computeIfAbsent(segment.getDepartureHub().getId(), k -> new ArrayList<>())
                     .add(segment);
         }
+        // 각 출발허브 별로 segment를 저장 (키로 구별하여 없으면 해당 그래프 생성해줌)
 
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        Map<UUID, Integer> minTimes = new HashMap<>();
-        Map<UUID, HubRoute> bestPathSegments = new HashMap<>();
+        Map<UUID, Integer> minTimes = new HashMap<>(); //출발 허브에서 각 허브까지 걸리는 최단 시긴 기록(현재까지의)
+        Map<UUID, HubRoute> bestPathSegments = new HashMap<>(); //특정 허브에 가장 빠르게 도착하는 직전 경로 segment
 
         List<Hub> allHubs = hubRepository.findAll();
         for (Hub hub : allHubs) {
