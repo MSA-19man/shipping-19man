@@ -8,7 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 // @EnableJpaAuditing
 @SpringBootApplication(scanBasePackages = {
 	"com.sparta.userservice",
-	"com.sparta.common.security"
+	"com.sparta.common.security",
+	"com.sparta.common.aop"
 })
 public class UserServiceApplication {
 
