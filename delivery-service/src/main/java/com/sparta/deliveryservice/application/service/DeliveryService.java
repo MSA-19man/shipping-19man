@@ -27,6 +27,7 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final DeliveryRouteRepository deliveryRouteRepository;
     private final HubFeignClient hubFeignClient;
+    private final DeliveryAgentService deliveryAgentService;
 
     @Transactional
     public CreateDeliveryResult createDelivery(CreateDeliveryCommand command) {
@@ -37,6 +38,7 @@ public class DeliveryService {
         Delivery delivery = command.toEntity();
 
         delivery = deliveryRepository.save(delivery);
+        assignDeliveryAgent(delivery);
         createDeliveryRoute(delivery);
         return CreateDeliveryResult.from(delivery);
     }
@@ -153,4 +155,12 @@ public class DeliveryService {
         }
     }
 
+    private void assignDeliveryAgent(Delivery delivery){
+        UUID companyAgentId = deliveryAgentService.assignCompanyAgent(delivery.getArrivalHubId());
+        if (companyAgentId == null){
+            throw new IllegalArgumentException("배송 담당자 배정이 실패했습니다.");
+        }
+        delivery.assignCompanyAgent(companyAgentId);
+        deliveryRepository.save(delivery);
+    }
 }
