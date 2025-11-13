@@ -22,4 +22,10 @@ public class UserRepositoryAdapter implements UserRepository {
 	public boolean existsByUsername(String username) {
 		return userJpaRepository.existsByUsername(username);
 	}
+
+	@Override
+	public User findByUsername(String username) {
+		return userJpaRepository.findByUsername(username)
+			.orElseThrow(() -> new RuntimeException("Username not found"));
+	}
 }
