@@ -3,6 +3,7 @@ package com.sparta.companyservice.presentation.controller;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import com.sparta.common.response.PageResponse;
 import com.sparta.companyservice.application.dto.CreateCompanyCommand;
 import com.sparta.companyservice.application.dto.FindCompanyResult;
 import com.sparta.companyservice.application.dto.GetCompanyResult;
-import com.sparta.companyservice.application.dto.PageCommand;
 import com.sparta.companyservice.application.service.CompanyService;
 import com.sparta.companyservice.domain.model.Company;
 import com.sparta.companyservice.presentation.request.CreateCompanyRequest;
@@ -26,12 +26,15 @@ import com.sparta.companyservice.presentation.response.CreateCompanyResponse;
 import com.sparta.companyservice.presentation.response.FindCompanyResponse;
 import com.sparta.companyservice.presentation.response.GetCompanyResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/companies")
+@Tag(name = "업체 API", description = "업체 관련 기능 API입니다.")
 public class CompanyController {
 
 	private final CompanyService companyService;
@@ -39,6 +42,7 @@ public class CompanyController {
 	/**
 	 * 업체 생성 - 권한: HUB_MANAGER, MASTER
 	 */
+	@Operation(summary = "업체 생성", description = "업체를 생성합니다.")
 	@PostMapping
 	public ResponseEntity<ApiResponse<CreateCompanyResponse>> createCompany(
 		@Valid @RequestBody CreateCompanyRequest request
@@ -55,6 +59,7 @@ public class CompanyController {
 	/**
 	 * 업체 단건 조회 - 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
 	 */
+	@Operation(summary = "업체 상세 조회", description = "업체를 상세 조회합니다.")
 	@GetMapping("/{companyId}")
 	public ResponseEntity<ApiResponse<FindCompanyResponse>> getCompany(
 		@PathVariable("companyId") UUID companyId
@@ -72,16 +77,16 @@ public class CompanyController {
 	 * 업체 다건 조회 (페이징)
 	 * 권한: DELIVERY_MANAGER, HUB_MANAGER, MASTER, SUPPLIER_MANAGER
 	 */
+	@Operation(summary = "업체 다건 조회", description = "업체를 모두 조회합니다.")
 	@GetMapping
 	public ResponseEntity<ApiResponse<PageResponse<GetCompanyResponse>>> getCompanies(
-		@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-		@RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
-		@RequestParam(name = "sort", required = false, defaultValue = "createdAt") String sort,
-		@RequestParam(name = "direction", required = false, defaultValue = "DESC") String direction
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size,
+		@RequestParam(defaultValue = "createdAt,desc") String sort
 	) {
-		PageCommand command = PageCommand.of(page, size, sort, direction);
+		Sort.Direction direction = sort.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-		Page<GetCompanyResult> results = companyService.getCompanies(command.toPageable());
+		Page<GetCompanyResult> results = companyService.getCompanies(page, size, direction);
 
 		Page<GetCompanyResponse> responsePage = results.map(GetCompanyResponse::fromResult);
 
