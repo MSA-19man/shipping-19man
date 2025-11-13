@@ -2,6 +2,7 @@ package com.sparta.hubservice.application.service;
 
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class HubService {
 	private final HubRouteService hubRouteService;
 
 	@Transactional
+	@CacheEvict(value = {"hubs", "hubRoutes"}, allEntries = true)
 	public CreateHubResult createHub(CreateHubCommand command) {
 		// Todo 허브 이름 중복 검사
 
@@ -41,6 +43,8 @@ public class HubService {
 
 		// 새로 생긴 허브-중앙 허브 경로(segment) 생성
 		hubRouteService.createSegmentsForNewHub(savedHub);
+
+		log.info("캐시 삭제");
 
 		return CreateHubResult.from(savedHub);
 	}

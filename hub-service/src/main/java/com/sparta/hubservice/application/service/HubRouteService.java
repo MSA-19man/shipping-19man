@@ -1,18 +1,18 @@
 package com.sparta.hubservice.application.service;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.sparta.hubservice.domain.model.Hub;
 import com.sparta.hubservice.domain.model.HubRoute;
 import com.sparta.hubservice.domain.repository.HubRepository;
 import com.sparta.hubservice.domain.repository.HubRouteRepository;
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
