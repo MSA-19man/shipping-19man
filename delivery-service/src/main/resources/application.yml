@@ -20,6 +20,20 @@ spring:
         default_schema: delivery_schema
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: delivery-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: deliveryCreationMessage:com.sparta.deliveryservice.application.dto.CreateDeliveryMessage
+    listener:
+      ack-mode: manual
+
 eureka:
   client:
     service-url:
@@ -53,3 +67,4 @@ feign:
       hub-service:
         connectTimeout: 3000
         readTimeout: 5000
+
