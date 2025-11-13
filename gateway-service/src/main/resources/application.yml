@@ -42,7 +42,7 @@ spring:
         - id: hub-service
           uri: lb://hub-service
           predicates:
-            - Path=/v1/hubs/**
+            - Path=/api/v1/hubs/**
         - id: ai-service
           uri: lb://ai-service
           predicates:
